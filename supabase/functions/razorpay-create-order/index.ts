@@ -1,4 +1,7 @@
+// @ts-ignore
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
+
+declare const Deno: any;
 
 const RAZORPAY_KEY_ID = Deno.env.get('RAZORPAY_KEY_ID');
 const RAZORPAY_KEY_SECRET = Deno.env.get('RAZORPAY_KEY_SECRET');
@@ -9,7 +12,7 @@ interface OrderRequest {
     receipt: string;
 }
 
-serve(async (req) => {
+serve(async (req: any) => {
     // Handle CORS
     if (req.method === 'OPTIONS') {
         return new Response(null, {
@@ -69,8 +72,9 @@ serve(async (req) => {
         });
     } catch (error) {
         console.error('Error creating Razorpay order:', error);
+        const errorMessage = error instanceof Error ? error.message : 'Failed to create order';
         return new Response(
-            JSON.stringify({ error: error.message || 'Failed to create order' }),
+            JSON.stringify({ error: errorMessage }),
             {
                 status: 500,
                 headers: {

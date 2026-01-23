@@ -110,16 +110,16 @@ function App() {
         };
     }, []);
 
-    const handleAdminLogin = (password: string) => {
-        // For security, the password should be handled by a backend or .env
-        // Here we use a default one but strongly advise the user to set it
-        const adminPassword = 'admin123'; // Default password
+    const handleAdminLogin = ({ email, password }: { email: string; password: string }) => {
+        // Mock authentication logic - in a real app, use Supabase Auth
+        const adminEmail = 'admin@mindmesh.com';
+        const adminPassword = 'admin123';
 
-        if (password === adminPassword) {
+        if (email === adminEmail && password === adminPassword) {
             setIsAdminAuthenticated(true);
             toast.success('Access Granted. Welcome back, Admin.');
         } else {
-            toast.error('Invalid Secure Key. Access Denied.');
+            toast.error('Invalid credentials. Access Denied.');
         }
     };
 
@@ -130,7 +130,7 @@ function App() {
                     <Header />
                     <Suspense fallback={<StepSkeleton />}>
                         <AdminLogin
-                            onLogin={handleAdminLogin}
+                            onLogin={(credentials) => handleAdminLogin(credentials)}
                             onBack={() => setView('enrollment')}
                         />
                     </Suspense>
