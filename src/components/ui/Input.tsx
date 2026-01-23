@@ -54,7 +54,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                         onBlur={() => setIsFocused(false)}
                         maxLength={maxLength}
                         className={`
-              w-full px-4 py-4 ${icon ? 'pl-12' : ''} 
+              w-full px-4 py-3.5 ${icon ? 'pl-12' : ''} 
               bg-white 
               border-2 rounded-xl
               ${error ? 'border-red-500' : isFocused ? 'border-primary-500' : 'border-secondary-200'}

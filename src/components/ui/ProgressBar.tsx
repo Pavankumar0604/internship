@@ -15,7 +15,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
     const progress = (currentStep / totalSteps) * 100;
 
     return (
-        <div className="w-full py-6 bg-secondary-50">
+        <div className="w-full py-4 bg-secondary-50 border-b border-secondary-100">
             <div className="max-w-4xl mx-auto px-4">
                 {/* Step Indicators */}
                 <div className="flex items-center justify-between mb-4">

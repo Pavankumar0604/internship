@@ -1,8 +1,6 @@
 export type InternshipDomainTitle =
-    | 'UI/UX Design'
     | 'Frontend Development'
-    | 'Database Concepts'
-    | 'Digital Marketing';
+    | 'Backend & Database';
 
 export interface InternshipDomain {
     id: string;
@@ -10,8 +8,9 @@ export interface InternshipDomain {
     subtitle: string;
     icon: string;
     features: string[];
-    price?: number;
-    seatsAvailable?: number;
+    price: number;
+    subcourses?: string[];
+    recommended?: boolean;
 }
 
 export const QUALIFICATIONS = [
@@ -45,7 +44,7 @@ export interface PaymentDetails {
 
 export interface EnrollmentData {
     profile: StudentProfile;
-    domain: InternshipDomain | null;
+    domains: InternshipDomain[];
     payment: PaymentDetails | null;
 }
 
@@ -60,7 +59,8 @@ export type Enrollment = {
     college: string | null;
     resume_filename: string | null;
     resume_url: string | null;
-    domain: string;
+    domain: string; // Keep as string for DB, will be comma-separated or JSON
+    domains: string[]; // Add actual array for frontend use if needed, but the DB schema might be strict
     razorpay_order_id: string | null;
     razorpay_payment_id: string | null;
     amount: number;
@@ -79,51 +79,44 @@ export type Domain = {
 
 export const INTERNSHIP_DOMAINS: InternshipDomain[] = [
     {
-        id: 'ui-ux',
-        title: 'UI/UX Design',
-        subtitle: 'HTML/CSS Design Training',
-        icon: 'Palette',
-        features: [
-            'Figma / Adobe XD',
-            'Wireframing & Prototyping',
-            'Design Systems',
-            'User Research',
-        ],
-    },
-    {
         id: 'frontend',
         title: 'Frontend Development',
-        subtitle: 'HTML/CSS/JS Development',
+        subtitle: 'Professional Web UI Training',
         icon: 'Code',
+        price: 2500,
+        recommended: true,
         features: [
-            'React.js Fundamentals',
-            'Tailwind CSS',
+            'Live Project Work',
+            'Practical Skills',
+            'Internship Certificate',
+            'Job Ready Training',
+        ],
+        subcourses: [
+            'HTML',
+            'CSS',
+            'JavaScript',
             'Responsive Design',
-            'State Management',
+            'UI Basics',
         ],
     },
     {
-        id: 'database',
-        title: 'Database Concepts',
-        subtitle: 'HTML/SQL Database Training',
+        id: 'backend',
+        title: 'Backend & Database',
+        subtitle: 'Server-Side & Data Systems',
         icon: 'Database',
+        price: 3500,
         features: [
-            'SQL Basics',
-            'PostgreSQL / MySQL',
-            'Data Modeling',
-            'Query Optimization',
+            'Live Project Work',
+            'Practical Skills',
+            'Internship Certificate',
+            'Job Ready Training',
         ],
-    },
-    {
-        id: 'digital-marketing',
-        title: 'Digital Marketing',
-        subtitle: 'Digital Marketing Certification',
-        icon: 'Megaphone',
-        features: [
-            'SEO & SEM',
-            'Social Media Marketing',
-            'Content Strategy',
-            'Analytics & Reporting',
+        subcourses: [
+            'Backend Fundamentals',
+            'API Basics',
+            'Database Concepts',
+            'SQL',
+            'Server-Side Logic',
         ],
     },
 ];

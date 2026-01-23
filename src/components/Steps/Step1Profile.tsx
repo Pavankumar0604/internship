@@ -50,22 +50,22 @@ const Step1Profile: React.FC<Step1ProfileProps> = ({ onNext, initialData }) => {
             exit={{ opacity: 0, y: -20 }}
             className="max-w-2xl mx-auto"
         >
-            <div className="text-center mb-8">
+            <div className="text-center mb-6">
                 <motion.div
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ type: 'spring', stiffness: 200 }}
-                    className="inline-block p-4 bg-primary-50 rounded-2xl mb-4 border border-primary-100"
+                    className="inline-block p-3 bg-primary-50 rounded-xl mb-3 border border-primary-100"
                 >
-                    <User className="w-8 h-8 text-primary-500" />
+                    <User className="w-6 h-6 text-primary-500" />
                 </motion.div>
-                <h2 className="text-3xl font-bold text-secondary-900 mb-2">Student Profile</h2>
-                <p className="text-secondary-500">
+                <h2 className="text-2xl font-black text-secondary-900 mb-1">Student Profile</h2>
+                <p className="text-secondary-500 text-sm">
                     Let's start with your basic information
                 </p>
             </div>
 
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                 {/* Full Name */}
                 <Input
                     {...register('name')}
@@ -140,7 +140,7 @@ const Step1Profile: React.FC<Step1ProfileProps> = ({ onNext, initialData }) => {
                     <Button
                         type="submit"
                         variant="primary"
-                        size="lg"
+                        size="md"
                         isLoading={isSubmitting}
                         className="w-full shadow-lg hover:shadow-xl transition-shadow"
                     >

@@ -23,22 +23,22 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ref
     ) => {
         const baseStyles =
-            'inline-flex items-center justify-center font-semibold rounded-xl transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-primary-500/20 disabled:opacity-50 disabled:cursor-not-allowed';
+            'inline-flex items-center justify-center font-extrabold rounded-2xl transition-all duration-500 focus:outline-none focus:ring-4 focus:ring-primary-400/30 disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-widest relative overflow-hidden group';
 
         const variantStyles = {
             primary:
-                'bg-primary-500 text-white shadow-lg shadow-primary-500/30 hover:bg-primary-600 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]',
+                'bg-gradient-to-r from-primary-500 via-primary-600 to-primary-700 text-white shadow-[0_10px_20px_-5px_rgba(14,165,233,0.4)] hover:shadow-[0_15px_30px_-5px_rgba(14,165,233,0.6)] border-t border-white/20',
             secondary:
-                'bg-white text-secondary-700 border border-secondary-200 shadow-sm hover:bg-secondary-50 hover:border-secondary-300',
+                'bg-white text-secondary-800 border-2 border-secondary-100 hover:border-primary-200 hover:bg-primary-50/30 shadow-sm hover:shadow-md text-secondary-900',
             outline:
-                'bg-transparent border-2 border-primary-500 text-primary-500 hover:bg-primary-50',
-            ghost: 'bg-transparent text-primary-500 hover:bg-primary-50',
+                'bg-transparent border-2 border-primary-500 text-primary-600 hover:bg-primary-500 hover:text-white shadow-sm',
+            ghost: 'bg-transparent text-primary-600 hover:bg-primary-50 rounded-xl',
         };
 
         const sizeStyles = {
-            sm: 'px-3 py-1.5 text-xs gap-1.5',
-            md: 'px-4 py-2 text-sm gap-2',
-            lg: 'px-6 py-2.5 text-base gap-2',
+            sm: 'px-6 py-2.5 text-[10px] gap-2',
+            md: 'px-10 py-4 text-xs gap-3',
+            lg: 'px-14 py-5 text-sm gap-4',
         };
 
         return (
@@ -53,8 +53,15 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
                     disabled={disabled || isLoading}
                     {...props}
                 >
-                    {isLoading && <Loader2 className="animate-spin" size={size === 'sm' ? 16 : 20} />}
-                    {children}
+                    {/* Unique Shine Effect */}
+                    {variant === 'primary' && (
+                        <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-shine transition-transform duration-1000" />
+                    )}
+
+                    <span className="relative z-10 flex items-center justify-center gap-3">
+                        {isLoading && <Loader2 className="animate-spin" size={size === 'sm' ? 14 : 18} />}
+                        {children}
+                    </span>
                 </button>
             </motion.div>
         );

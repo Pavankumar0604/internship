@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Palette, Code, Database, Megaphone, ChevronRight } from 'lucide-react';
+import { Palette, Code, Database, Zap, Info } from 'lucide-react';
 import Card from '../ui/Card';
 import Button from '../ui/Button';
 import { InternshipDomain, INTERNSHIP_DOMAINS } from '@/types/enrollment';
 
 interface Step2DomainProps {
-    onNext: (domain: InternshipDomain) => void;
+    onNext: (domains: InternshipDomain[]) => void;
     onBack: () => void;
     initialData?: InternshipDomain | null;
 }
@@ -15,7 +15,7 @@ const iconMap = {
     Palette: Palette,
     Code: Code,
     Database: Database,
-    Megaphone: Megaphone,
+    Zap: Zap,
 };
 
 const Step2Domain: React.FC<Step2DomainProps> = ({
@@ -23,43 +23,47 @@ const Step2Domain: React.FC<Step2DomainProps> = ({
     onBack,
     initialData,
 }) => {
-    const [selectedDomain, setSelectedDomain] = useState<InternshipDomain | null>(
-        initialData || null
+    const [selectedDomains, setSelectedDomains] = useState<InternshipDomain[]>(
+        initialData ? [initialData] : []
     );
-    const [expandedId, setExpandedId] = useState<string | null>(null);
 
-    const handleDomainSelect = (domain: InternshipDomain) => {
-        setSelectedDomain(domain);
-        setExpandedId(domain.id);
+    const toggleDomain = (domain: InternshipDomain) => {
+        if (selectedDomains.some(d => d.id === domain.id)) {
+            setSelectedDomains(selectedDomains.filter(d => d.id !== domain.id));
+        } else {
+            setSelectedDomains([...selectedDomains, domain]);
+        }
     };
 
     const handleContinue = () => {
-        if (selectedDomain) {
-            onNext(selectedDomain);
+        if (selectedDomains.length > 0) {
+            onNext(selectedDomains);
         }
     };
+
+    const totalPrice = selectedDomains.reduce((sum, d) => sum + d.price, 0);
 
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="max-w-5xl mx-auto"
+            className="max-w-4xl mx-auto"
         >
             <div className="text-center mb-8">
                 <motion.div
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ type: 'spring', stiffness: 200 }}
-                    className="inline-block p-4 bg-primary-50 rounded-2xl mb-4 border border-primary-100"
+                    className="inline-block p-3 bg-primary-50 rounded-xl mb-3 border border-primary-100"
                 >
-                    <Code className="w-8 h-8 text-primary-500" />
+                    <Zap className="w-6 h-6 text-primary-500" />
                 </motion.div>
-                <h2 className="text-3xl font-bold text-secondary-900 mb-2">
-                    Choose Your Domain
+                <h2 className="text-3xl font-black text-secondary-900 mb-1">
+                    Professional Course Selection
                 </h2>
-                <p className="text-secondary-500">
-                    Select the internship track that matches your interests
+                <p className="text-secondary-500 font-medium text-sm">
+                    Customize your training program. You can select one or both courses.
                 </p>
             </div>
 
@@ -67,8 +71,7 @@ const Step2Domain: React.FC<Step2DomainProps> = ({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                 {INTERNSHIP_DOMAINS.map((domain, index) => {
                     const Icon = iconMap[domain.icon as keyof typeof iconMap];
-                    const isSelected = selectedDomain?.id === domain.id;
-                    const isExpanded = expandedId === domain.id;
+                    const isSelected = selectedDomains.some(d => d.id === domain.id);
 
                     return (
                         <motion.div
@@ -76,69 +79,53 @@ const Step2Domain: React.FC<Step2DomainProps> = ({
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: index * 0.1 }}
+                            className="relative"
                         >
+                            {domain.recommended && (
+                                <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-20">
+                                    <span className="bg-gradient-to-r from-primary-500 to-sky-600 text-white text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest shadow-lg">
+                                        Best Value / Recommended
+                                    </span>
+                                </div>
+                            )}
+
                             <Card
-                                hover
                                 selected={isSelected}
-                                onClick={() => handleDomainSelect(domain)}
-                                className="p-6 h-full"
+                                onClick={() => toggleDomain(domain)}
+                                className={`p-6 h-full transition-all duration-500 cursor-pointer border-2 relative overflow-hidden ${isSelected
+                                    ? 'border-primary-500 shadow-glow'
+                                    : 'border-secondary-100 hover:border-primary-200'
+                                    }`}
                             >
-                                <div className="flex items-start gap-4 mb-4">
-                                    <div
-                                        className={`
-                    flex-shrink-0 w-14 h-14 rounded-xl flex items-center justify-center
-                    transition-all duration-300
-                    ${isSelected
-                                                ? 'bg-primary-50 text-primary-600 ring-2 ring-primary-100'
-                                                : 'bg-secondary-50 text-secondary-400'
-                                            }
-                  `}
-                                    >
-                                        <Icon
-                                            className={`w-7 h-7 ${isSelected ? 'text-primary-600' : 'text-secondary-400'
-                                                }`}
-                                        />
+
+
+                                <div className="flex flex-col items-center text-center gap-4 mb-6">
+                                    <div className={`p-4 rounded-2xl transition-colors ${isSelected ? 'bg-primary-50 text-primary-600' : 'bg-secondary-50 text-secondary-400'
+                                        }`}>
+                                        <Icon className="w-10 h-10" />
                                     </div>
-                                    <div className="flex-1">
-                                        <h3 className={`text-xl font-bold mb-1 ${isSelected ? 'text-primary-900' : 'text-secondary-800'}`}>
+                                    <div>
+                                        <h3 className={`text-2xl font-bold mb-1 ${isSelected ? 'text-primary-900' : 'text-secondary-800'}`}>
                                             {domain.title}
                                         </h3>
-                                        <p className={`text-sm font-semibold ${isSelected ? 'text-primary-600' : 'text-secondary-500'}`}>
-                                            {domain.subtitle}
-                                        </p>
+                                        <p className="text-secondary-500 font-bold text-sm">{domain.subtitle}</p>
+                                    </div>
+                                    <div className="text-3xl font-black text-secondary-900">
+                                        ₹{domain.price}
                                     </div>
                                 </div>
 
-                                {/* Features List */}
-                                <AnimatePresence>
-                                    {(isExpanded || isSelected) && (
-                                        <motion.div
-                                            initial={{ opacity: 0, height: 0 }}
-                                            animate={{ opacity: 1, height: 'auto' }}
-                                            exit={{ opacity: 0, height: 0 }}
-                                            transition={{ duration: 0.3 }}
-                                            className="space-y-2 mt-4"
-                                        >
-                                            <p className={`text-sm font-semibold mb-3 ${isSelected ? 'text-primary-700' : 'text-secondary-600'}`}>
-                                                What you'll learn:
-                                            </p>
-                                            {domain.features.map((feature, idx) => (
-                                                <motion.div
-                                                    key={idx}
-                                                    initial={{ opacity: 0, x: -10 }}
-                                                    animate={{ opacity: 1, x: 0 }}
-                                                    transition={{ delay: idx * 0.05 }}
-                                                    className="flex items-start gap-2"
-                                                >
-                                                    <ChevronRight className={`w-4 h-4 flex-shrink-0 mt-0.5 ${isSelected ? 'text-primary-500' : 'text-secondary-300'}`} />
-                                                    <span className={`text-sm ${isSelected ? 'text-secondary-700' : 'text-secondary-500'}`}>
-                                                        {feature}
-                                                    </span>
-                                                </motion.div>
-                                            ))}
-                                        </motion.div>
-                                    )}
-                                </AnimatePresence>
+                                <div className="space-y-4 border-t border-secondary-50 pt-6">
+                                    <p className="text-xs font-black uppercase tracking-widest text-secondary-400 mb-2">Curriculum Includes:</p>
+                                    <div className="grid grid-cols-2 gap-2">
+                                        {domain.subcourses?.map((sc, idx) => (
+                                            <div key={idx} className="flex items-center gap-1.5">
+                                                <div className="w-1.5 h-1.5 rounded-full bg-primary-400" />
+                                                <span className="text-[11px] font-bold text-secondary-600">{sc}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
                             </Card>
                         </motion.div>
                     );
@@ -147,56 +134,56 @@ const Step2Domain: React.FC<Step2DomainProps> = ({
 
             {/* Selection Summary */}
             <AnimatePresence>
-                {selectedDomain && (
+                {selectedDomains.length > 0 && (
                     <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -20 }}
-                        className="bg-primary-50 border border-primary-200 rounded-2xl p-6 mb-6"
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.95 }}
+                        className="bg-secondary-900 rounded-2xl p-6 mb-8 text-white shadow-xl relative overflow-hidden border border-white/5"
                     >
-                        <div className="flex items-center gap-3 mb-2">
-                            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                            <p className="text-secondary-800 font-semibold">Selected Domain:</p>
+                        <div className="absolute -top-4 -right-4 p-4 opacity-[0.03]">
+                            <Info className="w-20 h-20" />
                         </div>
-                        <p className="text-2xl font-bold text-primary-700">
-                            {selectedDomain.title}
-                        </p>
-                        <p className="text-secondary-600 mt-1">{selectedDomain.subtitle}</p>
+                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
+                            <div>
+                                <p className="text-primary-400 font-black uppercase tracking-widest text-[10px] mb-2">Selected Programs</p>
+                                <div className="flex flex-wrap gap-2">
+                                    {selectedDomains.map(d => (
+                                        <span key={d.id} className="bg-white/5 px-4 py-1 rounded-lg text-xs font-black border border-white/10 uppercase tracking-tight">
+                                            {d.title}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+                            <div className="text-right">
+                                <p className="text-secondary-400 font-black text-[10px] mb-1 uppercase tracking-widest text-left md:text-right">Total Payable</p>
+                                <p className="text-4xl font-black text-white">₹{totalPrice}</p>
+                            </div>
+                        </div>
                     </motion.div>
                 )}
             </AnimatePresence>
 
             {/* Action Buttons */}
-            <div className="flex gap-4">
-                <Button variant="secondary" size="lg" onClick={onBack} className="flex-1 bg-white border-secondary-200 text-secondary-700 hover:bg-secondary-50">
-                    ← Back
+            <div className="flex flex-col sm:flex-row gap-4">
+                <Button
+                    variant="secondary"
+                    size="md"
+                    onClick={onBack}
+                    className="flex-1"
+                >
+                    Previous Step
                 </Button>
                 <Button
                     variant="primary"
-                    size="lg"
+                    size="md"
                     onClick={handleContinue}
-                    disabled={!selectedDomain}
-                    className="flex-1 shadow-lg"
+                    disabled={selectedDomains.length === 0}
+                    className="flex-1"
                 >
-                    Continue to Payment →
+                    Proceed to Payment →
                 </Button>
             </div>
-
-            {/* Certificate Badge */}
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5 }}
-                className="mt-8 text-center"
-            >
-                <div className="inline-flex items-center gap-2 bg-white px-6 py-3 rounded-full border border-secondary-100 shadow-sm">
-                    <span className="text-2xl">🏆</span>
-                    <p className="text-secondary-600 text-sm">
-                        <span className="font-bold text-primary-600">Certificate</span> on
-                        completion
-                    </p>
-                </div>
-            </motion.div>
         </motion.div>
     );
 };

@@ -80,7 +80,7 @@ const Step4Success: React.FC<Step4SuccessProps> = ({
             )}
 
             {/* Success Icon */}
-            <div className="text-center mb-8">
+            <div className="text-center mb-6">
                 <motion.div
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
@@ -91,9 +91,9 @@ const Step4Success: React.FC<Step4SuccessProps> = ({
                     }}
                     className="inline-block relative"
                 >
-                    <div className="absolute inset-0 bg-green-500 rounded-full blur-2xl opacity-20 animate-pulse" />
-                    <div className="relative p-6 bg-gradient-to-br from-green-400 to-green-600 rounded-full shadow-lg">
-                        <CheckCircle className="w-16 h-16 text-white" />
+                    <div className="absolute inset-0 bg-primary-500 rounded-full blur-2xl opacity-20 animate-pulse" />
+                    <div className="relative p-5 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full shadow-lg">
+                        <CheckCircle className="w-12 h-12 text-white" />
                     </div>
                 </motion.div>
 
@@ -101,7 +101,7 @@ const Step4Success: React.FC<Step4SuccessProps> = ({
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4 }}
-                    className="text-4xl font-bold text-secondary-900 mt-6 mb-2"
+                    className="text-3xl font-black text-secondary-900 mt-4 mb-1"
                 >
                     Enrollment Successful! 🎉
                 </motion.h2>
@@ -109,7 +109,7 @@ const Step4Success: React.FC<Step4SuccessProps> = ({
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.5 }}
-                    className="text-secondary-500 text-lg"
+                    className="text-secondary-500 font-medium"
                 >
                     Welcome aboard, {studentName}!
                 </motion.p>
@@ -121,39 +121,39 @@ const Step4Success: React.FC<Step4SuccessProps> = ({
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6 }}
             >
-                <Card className="p-8 mb-6 bg-white border-secondary-100 shadow-xl">
-                    <div className="grid md:grid-cols-2 gap-8">
+                <Card className="p-6 mb-5 bg-white border-secondary-100 shadow-xl">
+                    <div className="grid md:grid-cols-2 gap-6">
                         {/* Left: Details */}
                         <div className="space-y-6">
                             <div>
                                 <p className="text-secondary-500 text-sm mb-2">Enrollment ID</p>
                                 <div className="flex items-center gap-2">
-                                    <code className="text-2xl font-bold text-primary-600 font-mono">
+                                    <code className="text-xl font-black text-primary-600 font-mono">
                                         {enrollmentId}
                                     </code>
                                     <button
                                         onClick={handleCopyEnrollmentId}
-                                        className="p-2 hover:bg-secondary-50 rounded-lg transition-colors"
+                                        className="p-1.5 hover:bg-secondary-50 rounded-lg transition-colors"
                                         title="Copy to clipboard"
                                     >
-                                        <Copy className="w-5 h-5 text-secondary-400 hover:text-primary-500" />
+                                        <Copy className="w-4 h-4 text-secondary-400 hover:text-primary-500" />
                                     </button>
                                 </div>
                             </div>
 
                             <div>
                                 <p className="text-secondary-500 text-sm mb-2">Selected Domain</p>
-                                <div className="bg-primary-50 border border-primary-100 rounded-xl p-4">
-                                    <p className="text-primary-700 font-bold text-lg">{domain}</p>
+                                <div className="bg-primary-50 border border-primary-100 rounded-xl p-3">
+                                    <p className="text-primary-700 font-black">{domain}</p>
                                 </div>
                             </div>
 
-                            <div className="bg-green-50 border border-green-100 rounded-xl p-4">
-                                <div className="flex items-center gap-2 text-green-600">
-                                    <Award className="w-5 h-5" />
-                                    <p className="font-semibold">Certificate Guaranteed</p>
+                            <div className="bg-primary-50 border border-primary-100 rounded-xl p-3">
+                                <div className="flex items-center gap-2 text-primary-600">
+                                    <Award className="w-4 h-4" />
+                                    <p className="font-bold text-sm">Certificate Guaranteed</p>
                                 </div>
-                                <p className="text-green-600/80 text-sm mt-1">
+                                <p className="text-primary-600/80 text-[11px] mt-0.5">
                                     Complete the program to receive your certificate
                                 </p>
                             </div>
@@ -187,11 +187,10 @@ const Step4Success: React.FC<Step4SuccessProps> = ({
                     variant="primary"
                     size="md"
                     onClick={handleWhatsAppShare}
-                    className="w-full bg-[#25D366] hover:bg-[#128C7E] shadow-none"
-                    style={{ background: '#25D366' }} // Force WhatsApp color
+                    className="w-full shadow-lg"
                 >
                     <Share2 size={18} />
-                    WhatsApp
+                    Share
                 </Button>
                 <Button
                     variant="secondary"

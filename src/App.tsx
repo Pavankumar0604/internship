@@ -1,5 +1,5 @@
 import { useState, useEffect, Suspense, lazy } from 'react';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { Toaster } from 'react-hot-toast';
 import Header from './components/Header';
 import Hero from './components/Hero';
@@ -15,12 +15,16 @@ const Step1Profile = lazy(() => import('./components/Steps/Step1Profile'));
 const Step2Domain = lazy(() => import('./components/Steps/Step2Domain'));
 const Step3Payment = lazy(() => import('./components/Steps/Step3Payment'));
 const Step4Success = lazy(() => import('./components/Steps/Step4Success'));
+const AdminDashboard = lazy(() => import('./components/AdminDashboard'));
+const AdminLogin = lazy(() => import('./components/AdminLogin'));
 
 function App() {
     const { currentStep, nextStep, prevStep } = useMultiStep(4);
+    const [view, setView] = useState<'enrollment' | 'admin'>('enrollment');
+    const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
     const [enrollmentData, setEnrollmentData] = useState<EnrollmentData>({
         profile: {} as StudentProfile,
-        domain: null,
+        domains: [],
         payment: null,
     });
     const [enrollmentId, setEnrollmentId] = useState<string>('');
@@ -32,8 +36,8 @@ function App() {
     };
 
     // Handle Step 2: Domain selection
-    const handleDomainSubmit = (domain: InternshipDomain) => {
-        setEnrollmentData((prev) => ({ ...prev, domain }));
+    const handleDomainSubmit = (domains: InternshipDomain[]) => {
+        setEnrollmentData((prev) => ({ ...prev, domains }));
         nextStep();
     };
 
@@ -56,6 +60,7 @@ function App() {
             }
 
             // Create enrollment record
+            const totalAmount = enrollmentData.domains.reduce((sum, d) => sum + d.price, 0);
             await createEnrollment({
                 enrollment_id: newEnrollmentId,
                 name: enrollmentData.profile.name,
@@ -64,10 +69,11 @@ function App() {
                 qualification: enrollmentData.profile.qualification,
                 college: enrollmentData.profile.college,
                 resume_url: resumeUrl,
-                domain: enrollmentData.domain?.title || '',
+                domain: enrollmentData.domains.map(d => d.title).join(', '),
                 razorpay_order_id: payment.orderId,
                 razorpay_payment_id: payment.paymentId,
                 razorpay_signature: payment.signature,
+                amount: totalAmount,
                 status: 'completed',
             });
 
@@ -79,6 +85,11 @@ function App() {
             toast.error('Failed to complete enrollment. Please contact support.');
         }
     };
+
+    // Scroll to top on step change
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, [currentStep]);
 
     // Detect offline status
     useEffect(() => {
@@ -98,6 +109,45 @@ function App() {
             window.removeEventListener('online', handleOnline);
         };
     }, []);
+
+    const handleAdminLogin = (password: string) => {
+        // For security, the password should be handled by a backend or .env
+        // Here we use a default one but strongly advise the user to set it
+        const adminPassword = 'admin123'; // Default password
+
+        if (password === adminPassword) {
+            setIsAdminAuthenticated(true);
+            toast.success('Access Granted. Welcome back, Admin.');
+        } else {
+            toast.error('Invalid Secure Key. Access Denied.');
+        }
+    };
+
+    if (view === 'admin') {
+        if (!isAdminAuthenticated) {
+            return (
+                <div className="min-h-screen bg-secondary-50">
+                    <Header />
+                    <Suspense fallback={<StepSkeleton />}>
+                        <AdminLogin
+                            onLogin={handleAdminLogin}
+                            onBack={() => setView('enrollment')}
+                        />
+                    </Suspense>
+                    <Toaster position="top-center" />
+                </div>
+            );
+        }
+
+        return (
+            <Suspense fallback={<StepSkeleton />}>
+                <AdminDashboard onBack={() => {
+                    setView('enrollment');
+                    setIsAdminAuthenticated(false); // Log out when leaving
+                }} />
+            </Suspense>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-secondary-50 text-secondary-800 font-sans">
@@ -124,7 +174,17 @@ function App() {
             <Header />
 
             {/* Hero Section */}
-            {currentStep === 1 && <Hero />}
+            <AnimatePresence>
+                {currentStep === 1 && (
+                    <motion.div
+                        initial={{ opacity: 1 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        transition={{ duration: 0.3 }}
+                    >
+                        <Hero />
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
             {/* Progress Bar */}
             {currentStep < 4 && (
@@ -132,7 +192,7 @@ function App() {
             )}
 
             {/* Main Content */}
-            <main className="container mx-auto px-4 py-8 pb-16 max-w-4xl relative z-10">
+            <main id="enrollment-form" className="container mx-auto px-4 py-6 pb-12 max-w-4xl relative z-10">
                 <AnimatePresence mode="wait">
                     <Suspense fallback={<StepSkeleton />}>
                         {currentStep === 1 && (
@@ -148,7 +208,7 @@ function App() {
                                 key="step2"
                                 onNext={handleDomainSubmit}
                                 onBack={prevStep}
-                                initialData={enrollmentData.domain}
+                                initialData={enrollmentData.domains[0] || null}
                             />
                         )}
 
@@ -158,7 +218,7 @@ function App() {
                                 onNext={handlePaymentSubmit}
                                 onBack={prevStep}
                                 profile={enrollmentData.profile}
-                                domain={enrollmentData.domain!}
+                                domains={enrollmentData.domains}
                             />
                         )}
 
@@ -167,7 +227,7 @@ function App() {
                                 key="step4"
                                 enrollmentId={enrollmentId}
                                 studentName={enrollmentData.profile.name}
-                                domain={enrollmentData.domain?.title || ''}
+                                domain={enrollmentData.domains.map(d => d.title).join(', ')}
                             />
                         )}
                     </Suspense>
@@ -175,15 +235,23 @@ function App() {
             </main>
 
             {/* Footer */}
-            <footer className="border-t border-secondary-200 py-8 mt-12 bg-white">
+            <footer className="border-t border-secondary-200 py-6 mt-8 bg-white">
                 <div className="container mx-auto px-4 text-center">
                     <p className="text-secondary-500 text-sm">
                         © 2026 Mind Mesh Internship Program. All rights reserved.
                     </p>
-                    <p className="text-secondary-400 text-xs mt-2 flex items-center justify-center gap-1">
-                        <span>Powered by</span>
-                        <span className="font-bold text-secondary-600">Mind Mesh</span>
-                    </p>
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-4">
+                        <button
+                            onClick={() => setView('admin')}
+                            className="text-[10px] font-black uppercase tracking-widest text-secondary-300 hover:text-primary-500 transition-colors"
+                        >
+                            Admin Dashboard
+                        </button>
+                        <p className="text-secondary-400 text-xs flex items-center justify-center gap-1">
+                            <span>Powered by</span>
+                            <span className="font-bold text-secondary-600">Mind Mesh</span>
+                        </p>
+                    </div>
                 </div>
             </footer>
         </div>

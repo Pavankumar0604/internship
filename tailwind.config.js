@@ -47,8 +47,17 @@ export default {
             },
             backgroundImage: {
                 'gradient-primary': 'linear-gradient(135deg, #0ea5e9 0%, #38bdf8 100%)', // Blue gradient
+                'gradient-sky': 'linear-gradient(135deg, #0ea5e9 0%, #7dd3fc 100%)',
                 'gradient-badge': 'linear-gradient(to right, #0ea5e9, #38bdf8)',
-            }
+            },
+            keyframes: {
+                shine: {
+                    '100%': { transform: 'translateX(100%)' },
+                },
+            },
+            animation: {
+                shine: 'shine 0.8s ease-in-out',
+            },
         },
     },
     plugins: [],

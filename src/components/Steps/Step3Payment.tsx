@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { CreditCard, Shield, Loader2, AlertCircle } from 'lucide-react';
+import { CreditCard, Shield, AlertCircle } from 'lucide-react';
 import Button from '../ui/Button';
 import Card from '../ui/Card';
 import { loadRazorpay, createRazorpayOrder, openRazorpayCheckout, RazorpayResponse } from '@/lib/razorpay';
@@ -11,18 +11,18 @@ interface Step3PaymentProps {
     onNext: (payment: PaymentDetails) => void;
     onBack: () => void;
     profile: StudentProfile;
-    domain: InternshipDomain;
+    domains: InternshipDomain[];
 }
 
 const Step3Payment: React.FC<Step3PaymentProps> = ({
     onNext,
     onBack,
     profile,
-    domain,
+    domains,
 }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [razorpayLoaded, setRazorpayLoaded] = useState(false);
-    const enrollmentFee = parseInt(import.meta.env.VITE_ENROLLMENT_FEE || '50000') / 100; // Convert paise to rupees
+    const totalAmount = domains.reduce((sum, d) => sum + d.price, 0);
 
     useEffect(() => {
         loadRazorpay().then((loaded) => {
@@ -44,7 +44,7 @@ const Step3Payment: React.FC<Step3PaymentProps> = ({
         try {
             // Create order via Supabase Edge Function
             const receipt = `ENRL-${Date.now()}`;
-            const order = await createRazorpayOrder(enrollmentFee, receipt);
+            const order = await createRazorpayOrder(totalAmount, receipt);
 
             // Open Razorpay checkout
             openRazorpayCheckout(
@@ -84,22 +84,22 @@ const Step3Payment: React.FC<Step3PaymentProps> = ({
             exit={{ opacity: 0, y: -20 }}
             className="max-w-2xl mx-auto"
         >
-            <div className="text-center mb-8">
+            <div className="text-center mb-6">
                 <motion.div
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ type: 'spring', stiffness: 200 }}
-                    className="inline-block p-4 bg-primary-50 rounded-2xl mb-4 border border-primary-100"
+                    className="inline-block p-3 bg-primary-50 rounded-xl mb-3 border border-primary-100"
                 >
-                    <CreditCard className="w-8 h-8 text-primary-500" />
+                    <CreditCard className="w-6 h-6 text-primary-500" />
                 </motion.div>
-                <h2 className="text-3xl font-bold text-secondary-900 mb-2">Payment</h2>
-                <p className="text-secondary-500">Secure your seat in the program</p>
+                <h2 className="text-2xl font-black text-secondary-900 mb-1">Payment</h2>
+                <p className="text-secondary-500 text-sm">Secure your seat in the program</p>
             </div>
 
             {/* Enrollment Summary */}
-            <Card className="p-6 mb-6">
-                <h3 className="text-xl font-bold text-secondary-900 mb-4">Enrollment Summary</h3>
+            <Card className="p-5 mb-5">
+                <h3 className="text-lg font-black text-secondary-900 mb-3">Enrollment Summary</h3>
 
                 <div className="space-y-4">
                     <div className="flex justify-between items-start">
@@ -114,33 +114,33 @@ const Step3Payment: React.FC<Step3PaymentProps> = ({
                     </div>
 
                     <div className="border-t border-secondary-200 pt-4">
-                        <p className="text-secondary-500 text-sm mb-2">Selected Domain</p>
-                        <div className="bg-primary-50 border border-primary-100 rounded-xl p-4">
-                            <p className="text-primary-700 font-bold text-lg">{domain.title}</p>
-                            <p className="text-secondary-600 text-sm">{domain.subtitle}</p>
+                        <p className="text-secondary-500 text-sm mb-2">Selected Domains</p>
+                        <div className="space-y-2">
+                            {domains.map(d => (
+                                <div key={d.id} className="bg-primary-50 border border-primary-100 rounded-xl p-3">
+                                    <p className="text-primary-700 font-bold">{d.title}</p>
+                                    <p className="text-secondary-600 text-xs">{d.subtitle}</p>
+                                </div>
+                            ))}
                         </div>
                     </div>
 
                     <div className="border-t border-secondary-200 pt-4">
-                        <div className="flex justify-between items-center mb-2">
-                            <p className="text-secondary-600">Enrollment Fee</p>
-                            <p className="text-secondary-900 font-semibold">₹{enrollmentFee}</p>
-                        </div>
                         <div className="flex justify-between items-center text-lg font-bold">
-                            <p className="text-secondary-900">Total Amount</p>
-                            <p className="text-primary-600">₹{enrollmentFee}</p>
+                            <p className="text-secondary-900">Total Payable Amount</p>
+                            <p className="text-primary-600">₹{totalAmount}</p>
                         </div>
                     </div>
                 </div>
             </Card>
 
             {/* Security Badge */}
-            <div className="bg-white border border-secondary-200 rounded-xl p-4 mb-6 shadow-sm">
+            <div className="bg-white border border-secondary-200 rounded-xl p-3 mb-5 shadow-sm">
                 <div className="flex items-center gap-3">
-                    <Shield className="w-6 h-6 text-green-500" />
+                    <Shield className="w-5 h-5 text-primary-500" />
                     <div>
-                        <p className="text-secondary-900 font-semibold text-sm">Secure Payment</p>
-                        <p className="text-secondary-500 text-xs">
+                        <p className="text-secondary-900 font-bold text-[13px]">Secure Payment</p>
+                        <p className="text-secondary-500 text-[11px]">
                             Powered by Razorpay • 256-bit SSL Encryption
                         </p>
                     </div>
@@ -148,31 +148,28 @@ const Step3Payment: React.FC<Step3PaymentProps> = ({
             </div>
 
             {/* Payment Button */}
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-4">
                 <Button
                     variant="primary"
-                    size="lg"
+                    size="md"
                     onClick={handlePayment}
                     isLoading={isLoading}
                     disabled={!razorpayLoaded}
                     className="w-full shadow-lg"
                 >
                     {isLoading ? (
-                        <>
-                            <Loader2 className="animate-spin" />
-                            Processing Payment...
-                        </>
+                        'Processing Payment...'
                     ) : (
                         <>
                             <CreditCard size={20} />
-                            Pay ₹{enrollmentFee} Now
+                            Pay ₹{totalAmount} Now
                         </>
                     )}
                 </Button>
 
                 <Button
                     variant="secondary"
-                    size="lg"
+                    size="md"
                     onClick={onBack}
                     disabled={isLoading}
                     className="w-full bg-white border-secondary-200 text-secondary-700 hover:bg-secondary-50"
