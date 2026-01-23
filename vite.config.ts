@@ -61,11 +61,10 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          'vendor': ['react', 'react-dom', 'framer-motion'],
+          'vendor': ['react', 'react-dom'],
           'forms': ['react-hook-form', 'zod', '@hookform/resolvers'],
-          'utils': ['date-fns', 'clsx', 'tailwind-merge'],
           'supabase': ['@supabase/supabase-js'],
-          'payment': ['load-script']
+          'animations': ['framer-motion']
         }
       }
     }

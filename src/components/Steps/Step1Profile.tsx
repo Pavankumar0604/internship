@@ -39,7 +39,7 @@ const Step1Profile: React.FC<Step1ProfileProps> = ({ onNext, initialData }) => {
     const onSubmit = (data: StudentProfileFormData) => {
         onNext({
             ...data,
-            resumeFile,
+            resumeFile: data.resumeFile || undefined,
         });
     };
 

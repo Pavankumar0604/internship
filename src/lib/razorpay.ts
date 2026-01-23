@@ -51,7 +51,7 @@ export const loadRazorpay = (): Promise<boolean> => {
 // Create Razorpay order (Simulation for Demo)
 export const createRazorpayOrder = async (
     amount: number,
-    receipt: string
+    _receipt: string
 ): Promise<{ id: string; amount: number; currency: string }> => {
     // In a real app, this calls your backend.
     // For this demo, we'll return a mock order to allow the UI to proceed.
