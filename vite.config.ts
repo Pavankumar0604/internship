@@ -63,7 +63,7 @@ export default defineConfig({
         manualChunks: {
           'vendor': ['react', 'react-dom'],
           'forms': ['react-hook-form', 'zod', '@hookform/resolvers'],
-          'supabase': ['@supabase/supabase-js'],
+          'vendor-supabase': ['@supabase/supabase-js'],
           'animations': ['framer-motion']
         }
       }
