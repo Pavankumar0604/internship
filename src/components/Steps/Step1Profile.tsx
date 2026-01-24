@@ -74,6 +74,12 @@ const Step1Profile: React.FC<Step1ProfileProps> = ({ onNext, initialData }) => {
                     icon={<User size={20} />}
                     error={errors.name?.message}
                     maxLength={100}
+                    // Strict Masking: Only prevent typing of invalid chars
+                    onInput={(e) => {
+                        const target = e.target as HTMLInputElement;
+                        // Allow letters, spaces, hyphens, apostrophes only
+                        target.value = target.value.replace(/[^a-zA-Z\s'-]/g, '');
+                    }}
                 />
 
                 {/* Email */}
@@ -96,6 +102,11 @@ const Step1Profile: React.FC<Step1ProfileProps> = ({ onNext, initialData }) => {
                     error={errors.phone?.message}
                     maxLength={10}
                     showCounter
+                    // Strict Masking: Only prevent typing of non-digits
+                    onInput={(e) => {
+                        const target = e.target as HTMLInputElement;
+                        target.value = target.value.replace(/\D/g, '');
+                    }}
                 />
 
                 {/* Qualification */}
