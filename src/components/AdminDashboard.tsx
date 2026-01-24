@@ -16,7 +16,8 @@ import {
     HandCoins,
     LayoutDashboard
 } from 'lucide-react';
-import { getAllEnrollments, getDashboardStats, fetchRazorpayData } from '../lib/supabase';
+import { getAllEnrollments, getDashboardStats, getRazorpayData } from '../lib/supabase';
+import Skeleton from './ui/Skeleton';
 import Button from './ui/Button';
 import Card from './ui/Card';
 import toast from 'react-hot-toast';
@@ -46,10 +47,10 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBack }) => {
                 setEnrollments(data);
                 setStats(dashboardStats);
             } else if (activeTab === 'razorpay-payments') {
-                const data = await fetchRazorpayData('payments');
+                const data = await getRazorpayData('payments');
                 setRzpPayments(data.items || []);
             } else if (activeTab === 'razorpay-settlements') {
-                const data = await fetchRazorpayData('settlements');
+                const data = await getRazorpayData('settlements');
                 setRzpSettlements(data.items || []);
             }
         } catch (error) {
@@ -436,9 +437,12 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBack }) => {
                         )}
 
                         {loading && (
-                            <div className="py-20 flex flex-col items-center justify-center">
-                                <RefreshCw className="animate-spin text-primary-500 mb-4" size={32} />
-                                <p className="text-secondary-500 font-bold uppercase tracking-widest text-xs">Loading Secure Data...</p>
+                            <div className="p-6 space-y-4">
+                                {[...Array(5)].map((_, i) => (
+                                    <div key={i} className="flex items-center gap-4 animate-pulse">
+                                        <Skeleton className="h-12 w-full rounded-2xl bg-secondary-100/50" />
+                                    </div>
+                                ))}
                             </div>
                         )}
                     </div>

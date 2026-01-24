@@ -136,7 +136,7 @@ export const getDashboardStats = async () => {
 };
 
 // ADMIN: Fetch Razorpay data via Edge Function
-export const fetchRazorpayData = async (type: 'payments' | 'settlements', count: number = 20) => {
+export const getRazorpayData = async (type: 'payments' | 'settlements', count: number = 20) => {
     const { data, error } = await supabase.functions.invoke('razorpay-fetch-data', {
         body: { type, count }
     });
