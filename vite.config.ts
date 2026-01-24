@@ -60,12 +60,7 @@ export default defineConfig({
     minify: 'terser',
     rollupOptions: {
       output: {
-        manualChunks: {
-          'vendor': ['react', 'react-dom'],
-          'forms': ['react-hook-form', 'zod', '@hookform/resolvers'],
-          'vendor-supabase': ['@supabase/supabase-js'],
-          'animations': ['framer-motion']
-        }
+        manualChunks: undefined
       }
     }
   }
