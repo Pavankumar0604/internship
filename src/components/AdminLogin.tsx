@@ -18,8 +18,22 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLogin, onBack }) => {
         e.preventDefault();
         setError('');
 
-        if (!email || !password) {
+        // 1. Check for empty fields
+        if (!email.trim() || !password.trim()) {
             setError('Please provide both administrator credentials');
+            return;
+        }
+
+        // 2. Validate Email Format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            setError('Please enter a valid email address');
+            return;
+        }
+
+        // 3. Validate Password Strength (Basic)
+        if (password.length < 8) {
+            setError('Password must be at least 8 characters');
             return;
         }
 

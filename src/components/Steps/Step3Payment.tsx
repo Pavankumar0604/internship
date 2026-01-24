@@ -47,6 +47,11 @@ const Step3Payment: React.FC<Step3PaymentProps> = ({
             return;
         }
 
+        if (totalAmount <= 0) {
+            toast.error('Invalid payment amount. Please select a valid course.');
+            return;
+        }
+
         setIsLoading(true);
 
         try {

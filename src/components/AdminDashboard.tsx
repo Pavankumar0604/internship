@@ -278,8 +278,85 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBack }) => {
                         </div>
                     )}
 
-                    {/* Desktop Table View */}
-                    <div className="overflow-x-auto">
+                    {/* Mobile Card View (Visible on small screens) */}
+                    <div className="md:hidden space-y-4 p-4">
+                        <AnimatePresence mode="popLayout">
+                            {activeTab === 'enrollments' && filteredEnrollments.map((enrollment, idx) => (
+                                <motion.div
+                                    key={enrollment.id}
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0 }}
+                                    transition={{ delay: idx * 0.05 }}
+                                >
+                                    <div className="bg-white p-5 rounded-2xl shadow-sm border border-secondary-100 hover:border-primary-200 transition-all">
+                                        <div className="flex justify-between items-start mb-4">
+                                            <div className="flex items-center gap-3">
+                                                <div className="w-10 h-10 rounded-xl bg-primary-100 flex items-center justify-center text-primary-600 font-black text-sm">
+                                                    {enrollment.name.charAt(0)}
+                                                </div>
+                                                <div>
+                                                    <p className="font-bold text-secondary-900 text-sm">{enrollment.name}</p>
+                                                    <p className="text-secondary-500 text-[10px] uppercase font-bold tracking-wider">{enrollment.enrollment_id}</p>
+                                                </div>
+                                            </div>
+                                            <span className={`px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-wider border ${getStatusColor(enrollment.status)}`}>
+                                                {enrollment.status}
+                                            </span>
+                                        </div>
+
+                                        <div className="space-y-3">
+                                            <div className="flex justify-between items-center text-xs">
+                                                <span className="text-secondary-400 font-medium">Domain</span>
+                                                <span className="text-secondary-700 font-bold">{enrollment.domain}</span>
+                                            </div>
+                                            <div className="flex justify-between items-center text-xs">
+                                                <span className="text-secondary-400 font-medium">Amount</span>
+                                                <span className="text-secondary-900 font-black">₹{enrollment.amount}</span>
+                                            </div>
+                                            <div className="flex justify-between items-center text-xs">
+                                                <span className="text-secondary-400 font-medium">Date</span>
+                                                <span className="text-secondary-500">{new Date(enrollment.created_at).toLocaleDateString()}</span>
+                                            </div>
+                                        </div>
+
+                                        {enrollment.razorpay_payment_id && (
+                                            <div className="mt-4 pt-3 border-t border-secondary-50 flex items-center justify-between">
+                                                <span className="text-[9px] text-primary-500 font-bold uppercase tracking-wider bg-primary-50 px-2 py-0.5 rounded">
+                                                    Paid via Razorpay
+                                                </span>
+                                                <span className="text-[10px] font-mono text-secondary-400">
+                                                    {enrollment.razorpay_payment_id.slice(-8)}...
+                                                </span>
+                                            </div>
+                                        )}
+                                    </div>
+                                </motion.div>
+                            ))}
+                        </AnimatePresence>
+
+                        {/* Mobile Views for other tabs can be added similarly */}
+                        {activeTab === 'razorpay-payments' && rzpPayments.map((pay) => (
+                            <div key={pay.id} className="bg-white p-5 rounded-2xl shadow-sm border border-secondary-100">
+                                <div className="flex justify-between items-start mb-3">
+                                    <div>
+                                        <p className="font-bold text-secondary-900 text-sm">₹{pay.amount / 100}</p>
+                                        <p className="text-secondary-500 text-[10px]">{pay.email}</p>
+                                    </div>
+                                    <span className={`px-2 py-1 rounded-full text-[9px] font-black uppercase tracking-tight border ${pay.status === 'captured' ? 'bg-primary-50 text-primary-600 border-primary-100' : 'bg-amber-50 text-amber-600 border-amber-100'}`}>
+                                        {pay.status}
+                                    </span>
+                                </div>
+                                <div className="flex justify-between items-center text-[10px] text-secondary-400 pt-2 border-t border-secondary-50">
+                                    <span className="font-mono">{pay.id}</span>
+                                    <span>{new Date(pay.created_at * 1000).toLocaleDateString()}</span>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Desktop Table View (Hidden on small screens) */}
+                    <div className="hidden md:block overflow-x-auto">
                         {activeTab === 'enrollments' && (
                             <table className="w-full text-left">
                                 <thead className="bg-[#FAFBFD] border-b border-secondary-100">
@@ -301,7 +378,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBack }) => {
                                                 animate={{ opacity: 1 }}
                                                 exit={{ opacity: 0 }}
                                                 transition={{ delay: idx * 0.05 }}
-                                                className="hover:bg-secondary-50/50 transition-colors group"
+                                                className="hover:bg-secondary-50/50 transition-colors group cursor-default"
                                             >
                                                 <td className="px-6 py-4">
                                                     <div className="flex items-center gap-3">

@@ -36,9 +36,14 @@ const Step2Domain: React.FC<Step2DomainProps> = ({
     };
 
     const handleContinue = () => {
-        if (selectedDomains.length > 0) {
-            onNext(selectedDomains);
+        if (selectedDomains.length === 0) {
+            // Interactive feedback instead of disabled button
+            import('react-hot-toast').then(({ default: toast }) => {
+                toast.error('Please select at least one course to proceed');
+            });
+            return;
         }
+        onNext(selectedDomains);
     };
 
     const totalPrice = selectedDomains.reduce((sum, d) => sum + d.price, 0);
@@ -176,7 +181,6 @@ const Step2Domain: React.FC<Step2DomainProps> = ({
                     variant="primary"
                     size="md"
                     onClick={handleContinue}
-                    disabled={selectedDomains.length === 0}
                     className="flex-1"
                 >
                     Proceed to Payment →
