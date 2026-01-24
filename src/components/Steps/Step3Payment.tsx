@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { CreditCard, Shield, AlertCircle, CheckCircle, Zap, ArrowRight } from 'lucide-react';
+import { CreditCard, Shield, AlertCircle } from 'lucide-react';
 import Button from '../ui/Button';
 import Card from '../ui/Card';
 import { loadRazorpay, createRazorpayOrder, openRazorpayCheckout, RazorpayResponse } from '@/lib/razorpay';
@@ -82,161 +82,137 @@ const Step3Payment: React.FC<Step3PaymentProps> = ({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="max-w-3xl mx-auto"
+            className="max-w-2xl mx-auto"
         >
-            <div className="text-center mb-8">
+            <div className="text-center mb-6">
                 <motion.div
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ type: 'spring', stiffness: 200 }}
-                    className="inline-flex p-4 bg-gradient-to-br from-primary-50 to-primary-100 rounded-2xl mb-4 border border-primary-200 shadow-inner"
+                    className="inline-block p-3 bg-primary-50 rounded-xl mb-3 border border-primary-100"
                 >
-                    <CreditCard className="w-8 h-8 text-primary-600" />
+                    <CreditCard className="w-6 h-6 text-primary-500" />
                 </motion.div>
-                <h2 className="text-3xl font-black text-secondary-900 mb-2">Secure Payment</h2>
-                <p className="text-secondary-500 font-medium">Complete your enrollment securely via Razorpay</p>
+                <h2 className="text-2xl font-black text-secondary-900 mb-1">Payment</h2>
+                <p className="text-secondary-500 text-sm">Secure your seat in the program</p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {/* Summary Column */}
-                <div className="md:col-span-2 space-y-6">
-                    <Card className="p-0 overflow-hidden border-secondary-200 shadow-card hover:shadow-card-hover transition-all duration-300">
-                        <div className="bg-secondary-50 p-6 border-b border-secondary-100">
-                            <h3 className="text-lg font-black text-secondary-900 flex items-center gap-2">
-                                <Shield className="w-5 h-5 text-primary-500" />
-                                Order Summary
-                            </h3>
-                        </div>
-                        <div className="p-6 space-y-6">
-                            <div className="flex justify-between items-center group">
-                                <div>
-                                    <p className="text-xs font-bold text-secondary-400 uppercase tracking-wider mb-1">Student</p>
-                                    <p className="text-secondary-900 font-bold text-lg">{profile.name}</p>
-                                </div>
-                                <div className="text-right">
-                                    <p className="text-xs font-bold text-secondary-400 uppercase tracking-wider mb-1">Contact</p>
-                                    <p className="text-secondary-900 font-medium font-mono">{profile.phone}</p>
-                                </div>
-                            </div>
+            {/* Enrollment Summary */}
+            <Card className="p-5 mb-5">
+                <h3 className="text-lg font-black text-secondary-900 mb-3">Enrollment Summary</h3>
 
-                            <div className="border-t border-dashed border-secondary-200 pt-6">
-                                <p className="text-xs font-bold text-secondary-400 uppercase tracking-wider mb-3">Selected Programs</p>
-                                <div className="space-y-3">
-                                    {domains.map(d => (
-                                        <div key={d.id} className="flex justify-between items-center bg-secondary-50 p-3 rounded-xl border border-secondary-100">
-                                            <div>
-                                                <p className="text-secondary-900 font-bold text-sm">{d.title}</p>
-                                                <p className="text-secondary-500 text-[10px]">{d.subtitle}</p>
-                                            </div>
-                                            <p className="text-primary-600 font-black text-sm">₹{d.price}</p>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-
-                            <div className="border-t border-secondary-200 pt-6 mt-6">
-                                <div className="flex justify-between items-end">
-                                    <div>
-                                        <p className="text-secondary-500 text-sm font-medium mb-1">Total Payable Amount</p>
-                                        <div className="flex items-center gap-2 text-green-600 bg-green-50 px-2 py-1 rounded-lg w-fit">
-                                            <Shield size={12} />
-                                            <span className="text-[10px] font-bold uppercase tracking-wide">Secure SSL Encrypted</span>
-                                        </div>
-                                    </div>
-                                    <div className="text-right">
-                                        <p className="text-4xl font-black text-secondary-900 tracking-tight">₹{totalAmount}</p>
-                                        <p className="text-secondary-400 text-xs mt-1">Inclusive of all taxes</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </Card>
-
-                    {/* Trust Badges */}
-                    <div className="grid grid-cols-2 gap-4">
-                        <div className="bg-white border border-secondary-100 rounded-xl p-4 flex items-center gap-3 shadow-sm">
-                            <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600">
-                                <Shield size={20} />
-                            </div>
-                            <div>
-                                <p className="text-xs font-bold text-secondary-900">100% Secure</p>
-                                <p className="text-[10px] text-secondary-500">Bank Grade Security</p>
-                            </div>
-                        </div>
-                        <div className="bg-white border border-secondary-100 rounded-xl p-4 flex items-center gap-3 shadow-sm">
-                            <div className="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center text-green-600">
-                                <CheckCircle size={20} />
-                            </div>
-                            <div>
-                                <p className="text-xs font-bold text-secondary-900">Trusted Platform</p>
-                                <p className="text-[10px] text-secondary-500">Razorpay Verified</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Action Column */}
                 <div className="space-y-4">
-                    <div className="bg-gradient-to-br from-secondary-900 to-secondary-800 rounded-2xl p-6 text-white shadow-xl relative overflow-hidden">
-                        <div className="absolute top-0 right-0 p-4 opacity-10">
-                            <CreditCard size={100} />
+                    <div className="flex justify-between items-start">
+                        <div>
+                            <p className="text-secondary-500 text-sm">Student Name</p>
+                            <p className="text-secondary-900 font-semibold">{profile.name}</p>
                         </div>
-
-                        <h3 className="text-lg font-bold mb-6 relative z-10">Complete Payment</h3>
-
-                        <div className="space-y-4 relative z-10">
-                            <Button
-                                variant="primary"
-                                size="lg"
-                                onClick={handlePayment}
-                                isLoading={isLoading}
-                                disabled={!razorpayLoaded}
-                                className="w-full shadow-lg shadow-primary-500/20 py-4 text-sm hover:scale-[1.02] active:scale-[0.98] transition-all"
-                            >
-                                {isLoading ? (
-                                    'Processing...'
-                                ) : (
-                                    <span className="flex items-center justify-center gap-2">
-                                        Pay ₹{totalAmount}
-                                        <ArrowRight size={18} />
-                                    </span>
-                                )}
-                            </Button>
-
-                            <Button
-                                variant="secondary"
-                                size="md"
-                                onClick={onBack}
-                                disabled={isLoading}
-                                className="w-full bg-white/10 border-white/10 text-white hover:bg-white/20 backdrop-blur-sm"
-                            >
-                                Change Selection
-                            </Button>
+                        <div className="text-right">
+                            <p className="text-secondary-500 text-sm">Contact</p>
+                            <p className="text-secondary-900 font-semibold">{profile.phone}</p>
                         </div>
-
-                        {!razorpayLoaded && (
-                            <div className="mt-4 p-3 bg-rose-500/20 border border-rose-500/30 rounded-xl flex items-center gap-2">
-                                <AlertCircle size={14} className="text-rose-400 shrink-0" />
-                                <p className="text-[10px] font-medium text-rose-200">Gateway loading...</p>
-                            </div>
-                        )}
                     </div>
 
-                    <div className="bg-primary-50 rounded-xl p-4 border border-primary-100">
-                        <div className="flex gap-3">
-                            <div className="p-2 bg-white rounded-lg shadow-sm h-fit">
-                                <Zap size={16} className="text-primary-500" />
-                            </div>
-                            <div>
-                                <p className="text-xs font-bold text-primary-800 mb-1">Instant Access</p>
-                                <p className="text-[10px] text-primary-600 leading-relaxed">
-                                    Your enrollment will be confirmed immediately after payment. You will receive login details via email.
-                                </p>
-                            </div>
+                    <div className="border-t border-secondary-200 pt-4">
+                        <p className="text-secondary-500 text-sm mb-2">Selected Domains</p>
+                        <div className="space-y-2">
+                            {domains.map(d => (
+                                <div key={d.id} className="bg-primary-50 border border-primary-100 rounded-xl p-3">
+                                    <p className="text-primary-700 font-bold">{d.title}</p>
+                                    <p className="text-secondary-600 text-xs">{d.subtitle}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="border-t border-secondary-200 pt-4">
+                        <div className="flex justify-between items-center text-lg font-bold">
+                            <p className="text-secondary-900">Total Payable Amount</p>
+                            <p className="text-primary-600">₹{totalAmount}</p>
                         </div>
                     </div>
                 </div>
+            </Card>
+
+            {/* Security Badge */}
+            <div className="bg-white border border-secondary-200 rounded-xl p-3 mb-5 shadow-sm">
+                <div className="flex items-center gap-3">
+                    <Shield className="w-5 h-5 text-primary-500" />
+                    <div>
+                        <p className="text-secondary-900 font-bold text-[13px]">Secure Payment</p>
+                        <p className="text-secondary-500 text-[11px]">
+                            Powered by Razorpay • 256-bit SSL Encryption
+                        </p>
+                    </div>
+                </div>
             </div>
+
+            {/* Payment Button */}
+            <div className="flex flex-col gap-4">
+                <Button
+                    variant="primary"
+                    size="md"
+                    onClick={handlePayment}
+                    isLoading={isLoading}
+                    disabled={!razorpayLoaded}
+                    className="w-full shadow-lg"
+                >
+                    {isLoading ? (
+                        'Processing Payment...'
+                    ) : (
+                        <>
+                            <CreditCard size={20} />
+                            Pay ₹{totalAmount} Now
+                        </>
+                    )}
+                </Button>
+
+                <Button
+                    variant="secondary"
+                    size="md"
+                    onClick={onBack}
+                    disabled={isLoading}
+                    className="w-full bg-white border-secondary-200 text-secondary-700 hover:bg-secondary-50"
+                >
+                    ← Back to Domain Selection
+                </Button>
+            </div>
+
+            {/* Payment Info */}
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.3 }}
+                className="mt-6 space-y-3"
+            >
+                <div className="flex items-start gap-2 text-secondary-500 text-sm">
+                    <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5 text-secondary-400" />
+                    <p>
+                        You'll receive a confirmation email and WhatsApp message after successful payment
+                    </p>
+                </div>
+                <div className="flex items-start gap-2 text-secondary-500 text-sm">
+                    <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5 text-secondary-400" />
+                    <p>
+                        Accepted payment methods: Credit/Debit Cards, UPI, Net Banking, Wallets
+                    </p>
+                </div>
+            </motion.div>
+
+            {/* Starts Monday Badge */}
+            <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.5 }}
+                className="mt-8 text-center"
+            >
+                <div className="inline-flex items-center gap-2 bg-gradient-to-r from-primary-500 to-sky-500 px-6 py-3 rounded-full shadow-lg shadow-primary-500/20">
+                    <span className="text-2xl">📅</span>
+                    <p className="text-white font-bold">
+                        New Batch Starting This Monday!
+                    </p>
+                </div>
+            </motion.div>
         </motion.div>
     );
 };
