@@ -24,6 +24,14 @@ const Step3Payment: React.FC<Step3PaymentProps> = ({
     const [razorpayLoaded, setRazorpayLoaded] = useState(false);
     const totalAmount = domains.reduce((sum, d) => sum + d.price, 0);
 
+    // DEBUG: Log loaded env vars (masked)
+    useEffect(() => {
+        console.log("DEBUG ENV:", {
+            VITE_RAZORPAY_KEY_ID: import.meta.env.VITE_RAZORPAY_KEY_ID ? "Exists" : "Missing",
+            ALL_ENV: import.meta.env
+        });
+    }, []);
+
     useEffect(() => {
         loadRazorpay().then((loaded) => {
             setRazorpayLoaded(loaded);
