@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Palette, Code, Database, Zap, Info } from 'lucide-react';
+import Card from '../ui/Card';
 import Button from '../ui/Button';
 import { InternshipDomain, INTERNSHIP_DOMAINS } from '@/types/enrollment';
 
@@ -47,27 +48,27 @@ const Step2Domain: React.FC<Step2DomainProps> = ({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="max-w-5xl mx-auto"
+            className="max-w-4xl mx-auto"
         >
-            <div className="text-center mb-10">
+            <div className="text-center mb-8">
                 <motion.div
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ type: 'spring', stiffness: 200 }}
-                    className="inline-flex p-4 bg-gradient-to-br from-primary-50 to-primary-100 rounded-2xl mb-4 border border-primary-200 shadow-inner"
+                    className="inline-block p-3 bg-primary-50 rounded-xl mb-3 border border-primary-100"
                 >
-                    <Zap className="w-8 h-8 text-primary-600" />
+                    <Zap className="w-6 h-6 text-primary-500" />
                 </motion.div>
-                <h2 className="text-4xl font-black text-secondary-900 mb-3 tracking-tight">
+                <h2 className="text-3xl font-black text-secondary-900 mb-1">
                     Professional Course Selection
                 </h2>
-                <p className="text-secondary-500 font-medium text-lg max-w-xl mx-auto leading-relaxed">
-                    Customize your training program. You can select one or both courses to accelerate your career.
+                <p className="text-secondary-500 font-medium text-sm">
+                    Customize your training program. You can select one or both courses.
                 </p>
             </div>
 
             {/* Domain Cards Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                 {INTERNSHIP_DOMAINS.map((domain, index) => {
                     const Icon = iconMap[domain.icon as keyof typeof iconMap];
                     const isSelected = selectedDomains.some(d => d.id === domain.id);
@@ -78,82 +79,52 @@ const Step2Domain: React.FC<Step2DomainProps> = ({
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: index * 0.1 }}
-                            className="relative group"
+                            className="relative"
                         >
                             {domain.recommended && (
                                 <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-20">
-                                    <span className="bg-gradient-to-r from-primary-600 to-sky-600 text-white text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest shadow-lg shadow-primary-500/20">
+                                    <span className="bg-gradient-to-r from-primary-500 to-sky-600 text-white text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest shadow-lg">
                                         Best Value / Recommended
                                     </span>
                                 </div>
                             )}
 
-                            <div
+                            <Card
+                                selected={isSelected}
                                 onClick={() => toggleDomain(domain)}
-                                className={`
-                                    h-full relative overflow-hidden rounded-3xl transition-all duration-300 cursor-pointer
-                                    ${isSelected
-                                        ? 'ring-4 ring-primary-500/20 shadow-xl shadow-primary-500/10 -translate-y-1'
-                                        : 'hover:-translate-y-1 hover:shadow-xl shadow-md bg-white border border-secondary-100'
-                                    }
-                                `}
+                                className={`p-6 h-full transition-all duration-500 cursor-pointer border-2 relative overflow-hidden ${isSelected
+                                    ? 'border-primary-500 shadow-glow'
+                                    : 'border-secondary-100 hover:border-primary-200'
+                                    }`}
                             >
-                                {/* Background Effect for Selected State */}
-                                {isSelected && (
-                                    <div className="absolute inset-0 bg-gradient-to-br from-primary-50 via-white to-primary-50 z-0" />
-                                )}
-
-                                <div className="relative z-10 p-8 flex flex-col h-full">
-                                    <div className="flex justify-between items-start mb-6">
-                                        <div className={`
-                                            p-4 rounded-2xl transition-all duration-300
-                                            ${isSelected
-                                                ? 'bg-primary-500 text-white shadow-lg shadow-primary-500/30 rotate-3'
-                                                : 'bg-secondary-50 text-secondary-400 group-hover:bg-primary-50 group-hover:text-primary-500'
-                                            }
-                                        `}>
-                                            <Icon className="w-8 h-8" />
-                                        </div>
-                                        {isSelected && (
-                                            <div className="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center text-primary-600">
-                                                <div className="w-4 h-4 rounded-full bg-primary-500" />
-                                            </div>
-                                        )}
+                                <div className="flex flex-col items-center text-center gap-4 mb-6">
+                                    <div className={`p-4 rounded-2xl transition-colors ${isSelected ? 'bg-primary-50 text-primary-600' : 'bg-secondary-50 text-secondary-400'
+                                        }`}>
+                                        <Icon className="w-10 h-10" />
                                     </div>
-
-                                    <div className="mb-6 flex-1">
-                                        <h3 className={`text-2xl font-bold mb-2 ${isSelected ? 'text-primary-900' : 'text-secondary-900'}`}>
+                                    <div>
+                                        <h3 className={`text-2xl font-bold mb-1 ${isSelected ? 'text-primary-900' : 'text-secondary-800'}`}>
                                             {domain.title}
                                         </h3>
-                                        <p className="text-secondary-500 font-medium text-sm leading-relaxed">{domain.subtitle}</p>
+                                        <p className="text-secondary-500 font-bold text-sm">{domain.subtitle}</p>
                                     </div>
-
-                                    <div className="space-y-4 border-t border-secondary-200/50 pt-6">
-                                        <div className="flex items-end justify-between">
-                                            <div>
-                                                <p className="text-[10px] font-black uppercase tracking-widest text-secondary-400 mb-1">Tuition Fee</p>
-                                                <div className="flex items-baseline gap-1">
-                                                    <span className="text-3xl font-black text-secondary-900">₹{domain.price}</span>
-                                                    <span className="text-secondary-400 text-sm font-medium line-through">₹{domain.price * 2}</span>
-                                                </div>
-                                            </div>
-                                            <p className="text-[10px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded-lg">50% Scholarship</p>
-                                        </div>
-
-                                        <div className="space-y-2">
-                                            {domain.subcourses?.slice(0, 3).map((sc, idx) => (
-                                                <div key={idx} className="flex items-center gap-2">
-                                                    <div className={`w-1.5 h-1.5 rounded-full ${isSelected ? 'bg-primary-500' : 'bg-secondary-300'}`} />
-                                                    <span className="text-xs font-bold text-secondary-600">{sc}</span>
-                                                </div>
-                                            ))}
-                                            {domain.subcourses && domain.subcourses.length > 3 && (
-                                                <p className="text-[10px] font-bold text-primary-600 pl-3.5">+ {domain.subcourses.length - 3} more modules</p>
-                                            )}
-                                        </div>
+                                    <div className="text-3xl font-black text-secondary-900">
+                                        ₹{domain.price}
                                     </div>
                                 </div>
-                            </div>
+
+                                <div className="space-y-4 border-t border-secondary-50 pt-6">
+                                    <p className="text-xs font-black uppercase tracking-widest text-secondary-400 mb-2">Curriculum Includes:</p>
+                                    <div className="grid grid-cols-2 gap-2">
+                                        {domain.subcourses?.map((sc, idx) => (
+                                            <div key={idx} className="flex items-center gap-1.5">
+                                                <div className="w-1.5 h-1.5 rounded-full bg-primary-400" />
+                                                <span className="text-[11px] font-bold text-secondary-600">{sc}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </Card>
                         </motion.div>
                     );
                 })}
@@ -163,61 +134,54 @@ const Step2Domain: React.FC<Step2DomainProps> = ({
             <AnimatePresence>
                 {selectedDomains.length > 0 && (
                     <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 20 }}
-                        className="fixed bottom-0 left-0 right-0 p-4 z-50 pointer-events-none"
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.95 }}
+                        className="bg-secondary-900 rounded-2xl p-6 mb-8 text-white shadow-xl relative overflow-hidden border border-white/5"
                     >
-                        <div className="max-w-3xl mx-auto bg-secondary-900/90 backdrop-blur-xl rounded-2xl p-4 shadow-2xl border border-white/10 text-white pointer-events-auto flex items-center justify-between gap-6">
-                            <div className="flex items-center gap-4">
-                                <div className="hidden md:block p-3 bg-white/10 rounded-xl">
-                                    <Info className="w-6 h-6 text-primary-400" />
-                                </div>
-                                <div>
-                                    <p className="text-secondary-400 text-[10px] font-black uppercase tracking-widest mb-1">Total Selection</p>
-                                    <div className="flex items-center gap-2">
-                                        <p className="text-2xl font-black text-white">₹{totalPrice}</p>
-                                        <span className="text-xs font-medium text-secondary-400">for {selectedDomains.length} course(s)</span>
-                                    </div>
+                        <div className="absolute -top-4 -right-4 p-4 opacity-[0.03]">
+                            <Info className="w-20 h-20" />
+                        </div>
+                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
+                            <div>
+                                <p className="text-primary-400 font-black uppercase tracking-widest text-[10px] mb-2">Selected Programs</p>
+                                <div className="flex flex-wrap gap-2">
+                                    {selectedDomains.map(d => (
+                                        <span key={d.id} className="bg-white/5 px-4 py-1 rounded-lg text-xs font-black border border-white/10 uppercase tracking-tight">
+                                            {d.title}
+                                        </span>
+                                    ))}
                                 </div>
                             </div>
-
-                            <div className="flex items-center gap-3">
-                                <Button
-                                    variant="secondary"
-                                    size="sm"
-                                    onClick={onBack}
-                                    className="bg-transparent border-white/20 text-white hover:bg-white/10"
-                                >
-                                    Back
-                                </Button>
-                                <Button
-                                    variant="primary"
-                                    size="lg"
-                                    onClick={handleContinue}
-                                    className="shadow-lg shadow-primary-500/20"
-                                >
-                                    Continue
-                                </Button>
+                            <div className="text-right">
+                                <p className="text-secondary-400 font-black text-[10px] mb-1 uppercase tracking-widest text-left md:text-right">Total Payable</p>
+                                <p className="text-4xl font-black text-white">₹{totalPrice}</p>
                             </div>
                         </div>
                     </motion.div>
                 )}
             </AnimatePresence>
 
-            {/* Empty State / Prompt (when nothing selected, show buttons normally) */}
-            {selectedDomains.length === 0 && (
-                <div className="flex justify-center mt-8">
-                    <Button
-                        variant="secondary"
-                        size="md"
-                        onClick={onBack}
-                        className="text-secondary-500 hover:text-secondary-900"
-                    >
-                        Go Back
-                    </Button>
-                </div>
-            )}
+            {/* Action Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4">
+                <Button
+                    variant="secondary"
+                    size="md"
+                    onClick={onBack}
+                    className="flex-1"
+                >
+                    Previous Step
+                </Button>
+                <Button
+                    variant="primary"
+                    size="md"
+                    onClick={handleContinue}
+                    disabled={selectedDomains.length === 0}
+                    className="flex-1"
+                >
+                    Proceed to Payment →
+                </Button>
+            </div>
         </motion.div>
     );
 };
