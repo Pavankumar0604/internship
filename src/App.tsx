@@ -7,7 +7,7 @@ import ProgressBar from './components/ui/ProgressBar';
 import { StepSkeleton } from './components/ui/Skeleton';
 import { useMultiStep } from './hooks/useMultiStep';
 import { EnrollmentData, StudentProfile, InternshipDomain, PaymentDetails } from './types/enrollment';
-import { generateEnrollmentId, createEnrollment, uploadResume } from './lib/supabase';
+import { generateEnrollmentId, createEnrollment, uploadResume } from './lib/db';
 import toast from 'react-hot-toast';
 
 // Lazy load steps for performance

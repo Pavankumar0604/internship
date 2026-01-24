@@ -1,4 +1,4 @@
-import { supabase } from './supabase';
+import { supabase } from './db';
 
 // ADMIN: Fetch all enrollments
 export const getAllEnrollments = async () => {
