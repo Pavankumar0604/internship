@@ -79,8 +79,11 @@ export const openRazorpayCheckout = (
     const options: any = {
         key: (() => {
             const key = import.meta.env.VITE_RAZORPAY_KEY_ID;
-            if (!key) throw new Error("Razorpay Key ID is missing from environment variables");
-            return key;
+            console.log('Razorpay Key Debug:', key ? `Present (${key.toString().substring(0, 5)}...)` : 'Missing');
+            if (!key || typeof key !== 'string' || !key.trim()) {
+                throw new Error("Razorpay Key ID is missing or invalid. Please check Vercel Environment Variables.");
+            }
+            return key.trim();
         })(),
         amount: order.amount,
         currency: 'INR',
