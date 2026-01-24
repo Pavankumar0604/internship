@@ -1,4 +1,4 @@
-import { useState, useEffect, Suspense, lazy } from 'react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Toaster } from 'react-hot-toast';
 import Header from './components/Header';
@@ -17,6 +17,37 @@ const Step3Payment = lazy(() => import('./components/Steps/Step3Payment'));
 const Step4Success = lazy(() => import('./components/Steps/Step4Success'));
 const AdminDashboard = lazy(() => import('./components/AdminDashboard'));
 const AdminLogin = lazy(() => import('./components/AdminLogin'));
+
+// Component to handle chunk load errors
+class LazyImportWithErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean }> {
+    constructor(props: { children: React.ReactNode }) {
+        super(props);
+        this.state = { hasError: false };
+    }
+
+    static getDerivedStateFromError(error: any) {
+        // Check if the error is a chunk load error
+        if (error.name === 'ChunkLoadError' || error.message?.includes('Failed to fetch dynamically imported module') || error.message?.includes('Importing a module script failed')) {
+            return { hasError: true };
+        }
+        return { hasError: false };
+    }
+
+    componentDidCatch(error: any) {
+        // If it's a chunk load error, reload the page once
+        if (error.name === 'ChunkLoadError' || error.message?.includes('Failed to fetch dynamically imported module') || error.message?.includes('Importing a module script failed')) {
+            console.log('Chunk load error detected, reloading page...');
+            window.location.reload();
+        }
+    }
+
+    render() {
+        if (this.state.hasError) {
+            return <StepSkeleton />;
+        }
+        return this.props.children;
+    }
+}
 
 function App() {
     const { currentStep, nextStep, prevStep } = useMultiStep(4);
@@ -195,41 +226,43 @@ function App() {
             <main id="enrollment-form" className="container mx-auto px-4 py-6 pb-12 max-w-4xl relative z-10">
                 <AnimatePresence mode="wait">
                     <Suspense fallback={<StepSkeleton />}>
-                        {currentStep === 1 && (
-                            <Step1Profile
-                                key="step1"
-                                onNext={handleProfileSubmit}
-                                initialData={enrollmentData.profile}
-                            />
-                        )}
+                        <LazyImportWithErrorBoundary>
+                            {currentStep === 1 && (
+                                <Step1Profile
+                                    key="step1"
+                                    onNext={handleProfileSubmit}
+                                    initialData={enrollmentData.profile}
+                                />
+                            )}
 
-                        {currentStep === 2 && (
-                            <Step2Domain
-                                key="step2"
-                                onNext={handleDomainSubmit}
-                                onBack={prevStep}
-                                initialData={enrollmentData.domains[0] || null}
-                            />
-                        )}
+                            {currentStep === 2 && (
+                                <Step2Domain
+                                    key="step2"
+                                    onNext={handleDomainSubmit}
+                                    onBack={prevStep}
+                                    initialData={enrollmentData.domains[0] || null}
+                                />
+                            )}
 
-                        {currentStep === 3 && (
-                            <Step3Payment
-                                key="step3"
-                                onNext={handlePaymentSubmit}
-                                onBack={prevStep}
-                                profile={enrollmentData.profile}
-                                domains={enrollmentData.domains}
-                            />
-                        )}
+                            {currentStep === 3 && (
+                                <Step3Payment
+                                    key="step3"
+                                    onNext={handlePaymentSubmit}
+                                    onBack={prevStep}
+                                    profile={enrollmentData.profile}
+                                    domains={enrollmentData.domains}
+                                />
+                            )}
 
-                        {currentStep === 4 && (
-                            <Step4Success
-                                key="step4"
-                                enrollmentId={enrollmentId}
-                                studentName={enrollmentData.profile.name}
-                                domain={enrollmentData.domains.map(d => d.title).join(', ')}
-                            />
-                        )}
+                            {currentStep === 4 && (
+                                <Step4Success
+                                    key="step4"
+                                    enrollmentId={enrollmentId}
+                                    studentName={enrollmentData.profile.name}
+                                    domain={enrollmentData.domains.map(d => d.title).join(', ')}
+                                />
+                            )}
+                        </LazyImportWithErrorBoundary>
                     </Suspense>
                 </AnimatePresence>
             </main>
