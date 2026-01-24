@@ -16,7 +16,7 @@ import {
     HandCoins,
     LayoutDashboard
 } from 'lucide-react';
-import { getAllEnrollments, getDashboardStats, getRazorpayData } from '../lib/supabase';
+import { getAllEnrollments, getDashboardStats, getRazorpayData } from '../lib/admin';
 import Skeleton from './ui/Skeleton';
 import Button from './ui/Button';
 import Card from './ui/Card';
