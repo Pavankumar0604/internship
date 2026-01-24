@@ -77,7 +77,11 @@ export const openRazorpayCheckout = (
     onDismiss: () => void
 ): void => {
     const options: any = {
-        key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+        key: (() => {
+            const key = import.meta.env.VITE_RAZORPAY_KEY_ID;
+            if (!key) throw new Error("Razorpay Key ID is missing from environment variables");
+            return key;
+        })(),
         amount: order.amount,
         currency: 'INR',
         name: 'Internship Enrollment',
