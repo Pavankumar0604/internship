@@ -29,9 +29,17 @@ ALTER TABLE enrollments ALTER COLUMN domain TYPE TEXT;
 ALTER TABLE enrollments DROP CONSTRAINT IF EXISTS enrollments_domain_check;
 ALTER TABLE enrollments DROP CONSTRAINT IF EXISTS enrollments_status_check;
 ALTER TABLE enrollments ADD CONSTRAINT enrollments_status_check 
-  CHECK (status IN ('pending', 'paid', 'verified', 'rejected', 'completed'));
+  CHECK (status IN ('pending', 'paid', 'verified', 'rejected', 'completed', 'waiting_approval', 'approved'));
 ALTER TABLE enrollments ALTER COLUMN amount DROP DEFAULT;
 ALTER TABLE enrollments ALTER COLUMN amount SET DATA TYPE INTEGER;
+
+-- NEW COLUMNS FOR STAFF & MEETINGS
+ALTER TABLE enrollments ADD COLUMN IF NOT EXISTS role VARCHAR(20) DEFAULT 'student';
+ALTER TABLE enrollments ADD COLUMN IF NOT EXISTS approved_by TEXT;
+ALTER TABLE enrollments ADD COLUMN IF NOT EXISTS approved_at TIMESTAMP WITH TIME ZONE;
+ALTER TABLE enrollments ADD COLUMN IF NOT EXISTS meeting_link TEXT;
+ALTER TABLE enrollments ADD COLUMN IF NOT EXISTS meeting_date TEXT;
+ALTER TABLE enrollments ADD COLUMN IF NOT EXISTS meeting_time TEXT;
 
 
 -- DOMAINS REFERENCE TABLE

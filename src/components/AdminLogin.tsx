@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Lock, Mail, ArrowRight, ShieldCheck, AlertCircle, ChevronLeft } from 'lucide-react';
 import Button from './ui/Button';
+import { supabase } from '../lib/db';
+import toast from 'react-hot-toast';
 
 interface AdminLoginProps {
     onLogin: (credentials: { email: string; password: string }) => void;
@@ -18,41 +20,41 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLogin, onBack }) => {
         e.preventDefault();
         setError('');
 
-        // 1. Check for empty fields
         if (!email.trim() || !password.trim()) {
-            setError('Please provide both administrator credentials');
-            return;
-        }
-
-        // 2. Validate Email Format
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-            setError('Please enter a valid email address');
-            return;
-        }
-
-        // 3. Validate Password Strength (Basic)
-        if (password.length < 8) {
-            setError('Password must be at least 8 characters');
+            setError('Please provide administrator credentials');
             return;
         }
 
         setIsSubmitting(true);
-        // Premium artificial delay
-        await new Promise(resolve => setTimeout(resolve, 1000));
 
-        onLogin({ email, password });
-        setIsSubmitting(false);
+        try {
+            const { data, error: authError } = await supabase.auth.signInWithPassword({
+                email,
+                password,
+            });
+
+            if (authError) throw authError;
+
+            if (data.user) {
+                toast.success('Access Granted. Session Initialized.');
+                onLogin({ email, password });
+            }
+        } catch (err: any) {
+            setError(err.message || 'Authentication failed. Access Denied.');
+            toast.error('Invalid credentials');
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden bg-[#f8fafc]">
+        <div className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden bg-secondary-50 transition-colors duration-300">
             {/* Unique Mesh Background Effect */}
             <div className="absolute inset-0 z-0 opacity-40">
                 <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
                     <defs>
                         <pattern id="mesh-grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#e2e8f0" strokeWidth="1" />
+                            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" className="text-secondary-200" strokeWidth="1" />
                         </pattern>
                     </defs>
                     <rect width="100%" height="100%" fill="url(#mesh-grid)" />
@@ -82,8 +84,6 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLogin, onBack }) => {
                 transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                 className="w-full max-w-[380px] relative z-10"
             >
-                {/* Header Section Removed - Button relocated */}
-
                 <div className="relative">
                     <div className="absolute inset-0 bg-white/40 backdrop-blur-3xl rounded-3xl shadow-2xl border border-white/50 -rotate-1 scale-[1.02] z-0" />
 
@@ -98,7 +98,7 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLogin, onBack }) => {
                             >
                                 <ShieldCheck size={28} />
                             </motion.div>
-                            <h2 className="text-2xl font-black text-secondary-900 tracking-tight">Admin</h2>
+                            <h2 className="text-2xl font-black text-secondary-900 tracking-tight">Admin Portal</h2>
                             <p className="text-secondary-500 text-xs font-semibold mt-1">Authorized Access Protocol</p>
                         </div>
 
@@ -118,6 +118,7 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLogin, onBack }) => {
                                             placeholder="admin@mindmesh.com"
                                             className="w-full pl-10 pr-4 py-3 bg-secondary-50 hover:bg-white focus:bg-white border text-sm border-transparent focus:border-primary-100 rounded-xl text-secondary-900 font-bold transition-all outline-none placeholder:text-secondary-300"
                                             disabled={isSubmitting}
+                                            required
                                         />
                                     </div>
                                 </div>
@@ -136,6 +137,7 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLogin, onBack }) => {
                                             placeholder="••••••••••••"
                                             className="w-full pl-10 pr-4 py-3 bg-secondary-50 hover:bg-white focus:bg-white border text-sm border-transparent focus:border-primary-100 rounded-xl text-secondary-900 font-bold transition-all outline-none placeholder:text-secondary-300"
                                             disabled={isSubmitting}
+                                            required
                                         />
                                     </div>
                                 </div>
@@ -162,7 +164,7 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLogin, onBack }) => {
                                 <Button
                                     type="submit"
                                     variant="primary"
-                                    className="w-full !rounded-xl py-3.5 !text-xs group shadow-lg"
+                                    className="w-full !rounded-xl py-3.5 !text-xs group shadow-lg transition-transform"
                                     isLoading={isSubmitting}
                                 >
                                     Launch Control Panel
@@ -175,7 +177,7 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLogin, onBack }) => {
                                     type="button"
                                     onClick={onBack}
                                     className="text-secondary-400 hover:text-primary-600 text-[10px] font-bold uppercase tracking-widest transition-colors flex items-center justify-center gap-2 mx-auto"
-                                    whileHover={{ scale: 1.05 }}
+                                    whileHover={{ x: -2 }}
                                     whileTap={{ scale: 0.95 }}
                                 >
                                     <ChevronLeft size={12} />

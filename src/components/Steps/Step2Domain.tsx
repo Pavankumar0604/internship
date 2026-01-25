@@ -9,6 +9,7 @@ interface Step2DomainProps {
     onNext: (domains: InternshipDomain[]) => void;
     onBack: () => void;
     initialData?: InternshipDomain | null;
+    role?: 'student' | 'staff'; // Added role
 }
 
 const iconMap = {
@@ -22,7 +23,9 @@ const Step2Domain: React.FC<Step2DomainProps> = ({
     onNext,
     onBack,
     initialData,
+    role = 'student',
 }) => {
+    const isStaff = role === 'staff';
     const [selectedDomains, setSelectedDomains] = useState<InternshipDomain[]>(
         initialData ? [initialData] : []
     );
@@ -65,10 +68,10 @@ const Step2Domain: React.FC<Step2DomainProps> = ({
                     <Zap className="w-6 h-6 text-primary-500" />
                 </motion.div>
                 <h2 className="text-3xl font-black text-secondary-900 mb-1">
-                    Professional Course Selection
+                    {isStaff ? 'Course Specialization' : 'Professional Course Selection'}
                 </h2>
                 <p className="text-secondary-500 font-medium text-sm">
-                    Customize your training program. You can select one or both courses.
+                    {isStaff ? 'Select the domain you will be assisting with.' : 'Customize your training program. You can select one or both courses.'}
                 </p>
             </div>
 
@@ -86,7 +89,7 @@ const Step2Domain: React.FC<Step2DomainProps> = ({
                             transition={{ delay: index * 0.1 }}
                             className="relative"
                         >
-                            {domain.recommended && (
+                            {domain.recommended && !isStaff && (
                                 <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-20">
                                     <span className="bg-gradient-to-r from-primary-500 to-sky-600 text-white text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest shadow-lg">
                                         Best Value / Recommended
@@ -114,7 +117,7 @@ const Step2Domain: React.FC<Step2DomainProps> = ({
                                         <p className="text-secondary-500 font-bold text-sm">{domain.subtitle}</p>
                                     </div>
                                     <div className="text-3xl font-black text-secondary-900">
-                                        ₹{domain.price}
+                                        {isStaff ? 'Staff Track' : `₹${domain.price}`}
                                     </div>
                                 </div>
 
@@ -159,8 +162,12 @@ const Step2Domain: React.FC<Step2DomainProps> = ({
                                 </div>
                             </div>
                             <div className="text-right">
-                                <p className="text-secondary-400 font-black text-[10px] mb-1 uppercase tracking-widest text-left md:text-right">Total Payable</p>
-                                <p className="text-4xl font-black text-white">₹{totalPrice}</p>
+                                <p className="text-secondary-400 font-black text-[10px] mb-1 uppercase tracking-widest text-left md:text-right">
+                                    {isStaff ? 'Enrollment Status' : 'Total Payable'}
+                                </p>
+                                <p className="text-4xl font-black text-white">
+                                    {isStaff ? 'FREE' : `₹${totalPrice}`}
+                                </p>
                             </div>
                         </div>
                     </motion.div>
@@ -183,7 +190,7 @@ const Step2Domain: React.FC<Step2DomainProps> = ({
                     onClick={handleContinue}
                     className="flex-1"
                 >
-                    Proceed to Payment →
+                    {isStaff ? 'Submit Application' : 'Proceed to Payment'} →
                 </Button>
             </div>
         </motion.div>

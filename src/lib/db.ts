@@ -42,6 +42,7 @@ export const uploadResume = async (file: File, enrollmentId: string) => {
 // Create enrollment in database
 export const createEnrollment = async (enrollmentData: {
     enrollment_id: string;
+    role: 'student' | 'staff'; // Added Role
     name: string;
     email?: string;
     phone: string;
@@ -54,6 +55,11 @@ export const createEnrollment = async (enrollmentData: {
     razorpay_signature?: string;
     amount: number;
     status: string;
+    approved_by?: string;
+    approved_at?: string;
+    meeting_link?: string;
+    meeting_date?: string;
+    meeting_time?: string;
 }) => {
     const { data, error } = await supabase
         .from('enrollments')
@@ -104,6 +110,36 @@ export const generateEnrollmentId = () => {
         .toString()
         .padStart(3, '0');
     return `ENRL-${year}${month}${day}-${random}`;
+};
+
+// Update enrollment status (for Admin)
+export const updateEnrollmentStatus = async (
+    enrollmentId: string,
+    status: 'approved' | 'rejected',
+    approvedBy?: string
+) => {
+    const updates: any = {
+        status,
+        updated_at: new Date().toISOString(),
+    };
+
+    if (status === 'approved') {
+        updates.approved_at = new Date().toISOString();
+        updates.approved_by = approvedBy;
+    }
+
+    const { data, error } = await supabase
+        .from('enrollments')
+        .update(updates)
+        .eq('enrollment_id', enrollmentId)
+        .select()
+        .single();
+
+    if (error) {
+        throw error;
+    }
+
+    return data;
 };
 
 // End of client exports

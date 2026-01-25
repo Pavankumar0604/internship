@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { User, Mail, Phone, Building2 } from 'lucide-react';
+import DOMPurify from 'dompurify';
 import Input from '../ui/Input';
 import Select from '../ui/Select';
 import Button from '../ui/Button';
@@ -28,6 +29,7 @@ const Step1Profile: React.FC<Step1ProfileProps> = ({ onNext, initialData }) => {
     } = useForm<StudentProfileFormData>({
         resolver: zodResolver(studentProfileSchema),
         defaultValues: {
+            role: initialData?.role || 'student',
             name: initialData?.name || '',
             email: initialData?.email || '',
             phone: initialData?.phone || '',
@@ -37,8 +39,17 @@ const Step1Profile: React.FC<Step1ProfileProps> = ({ onNext, initialData }) => {
     });
 
     const onSubmit = (data: StudentProfileFormData) => {
-        onNext({
+        // Sanitize all string fields to prevent XSS
+        const sanitizedData = {
             ...data,
+            name: DOMPurify.sanitize(data.name).trim(),
+            college: data.college ? DOMPurify.sanitize(data.college).trim() : undefined,
+            email: DOMPurify.sanitize(data.email).trim(),
+            phone: DOMPurify.sanitize(data.phone).trim(),
+        };
+
+        onNext({
+            ...sanitizedData,
             resumeFile: data.resumeFile || undefined,
         });
     };
@@ -74,10 +85,8 @@ const Step1Profile: React.FC<Step1ProfileProps> = ({ onNext, initialData }) => {
                     icon={<User size={20} />}
                     error={errors.name?.message}
                     maxLength={100}
-                    // Strict Masking: Only prevent typing of invalid chars
                     onInput={(e) => {
                         const target = e.target as HTMLInputElement;
-                        // Allow letters, spaces, hyphens, apostrophes only
                         target.value = target.value.replace(/[^a-zA-Z\s'-]/g, '');
                     }}
                 />
@@ -102,7 +111,6 @@ const Step1Profile: React.FC<Step1ProfileProps> = ({ onNext, initialData }) => {
                     error={errors.phone?.message}
                     maxLength={10}
                     showCounter
-                    // Strict Masking: Only prevent typing of non-digits
                     onInput={(e) => {
                         const target = e.target as HTMLInputElement;
                         target.value = target.value.replace(/\D/g, '');
@@ -115,6 +123,17 @@ const Step1Profile: React.FC<Step1ProfileProps> = ({ onNext, initialData }) => {
                     label="Qualification"
                     options={QUALIFICATIONS.map((q) => ({ value: q, label: q }))}
                     error={errors.qualification?.message}
+                />
+
+                {/* Role Selection */}
+                <Select
+                    {...register('role')}
+                    label="I am joining as a"
+                    options={[
+                        { value: 'student', label: 'Student Intern' },
+                        { value: 'staff', label: 'Staff Member' },
+                    ]}
+                    error={errors.role?.message}
                 />
 
                 {/* College/University */}

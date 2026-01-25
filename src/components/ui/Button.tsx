@@ -51,6 +51,8 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
                     ref={ref}
                     className={`${baseStyles} ${variantStyles[variant]} ${sizeStyles[size]} ${className}`}
                     disabled={disabled || isLoading}
+                    aria-busy={isLoading}
+                    aria-disabled={disabled || isLoading}
                     {...props}
                 >
                     {/* Unique Shine Effect */}

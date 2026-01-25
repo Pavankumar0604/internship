@@ -7,7 +7,11 @@
     <link rel="apple-touch-icon" href="/logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self'; script-src 'self' 'unsafe-inline' https://checkout.razorpay.com https://vercel.live; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://* blob:; connect-src 'self' https://*.supabase.co https://*.razorpay.com https://vercel.live; frame-src https://api.razorpay.com https://vercel.live">
+        content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://checkout.razorpay.com https://vercel.live; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://* blob:; connect-src 'self' https://*.supabase.co https://*.razorpay.com https://vercel.live; frame-src https://api.razorpay.com https://vercel.live; object-src 'none'; base-uri 'self'; upgrade-insecure-requests;">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), interest-cohort=()">
 
     <!-- SEO Meta Tags -->
     <title>15-Day Internship Enrollment | UI/UX, Frontend, Database, Digital Marketing</title>
@@ -46,6 +50,22 @@
 
     <!-- Razorpay Script Preload -->
     <link rel="preconnect" href="https://checkout.razorpay.com" />
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Course",
+      "name": "Mind Mesh 15-Day Internship Program",
+      "description": "Professional 15-day internship in UI/UX Design, Frontend Development, Database, and Digital Marketing.",
+      "provider": {
+        "@type": "Organization",
+        "name": "Mind Mesh",
+        "sameAs": "https://internship-enrollment.vercel.app/"
+      },
+      "educationalCredentialAwarded": "Internship Certificate"
+    }
+    </script>
 </head>
 
 <body>

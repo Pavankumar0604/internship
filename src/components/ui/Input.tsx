@@ -48,11 +48,14 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                     )}
                     <input
                         ref={ref}
+                        id={props.id || props.name}
                         value={value}
                         onChange={handleChange}
                         onFocus={() => setIsFocused(true)}
                         onBlur={() => setIsFocused(false)}
                         maxLength={maxLength}
+                        aria-invalid={!!error}
+                        aria-describedby={error ? `${props.id || props.name}-error` : undefined}
                         className={`
               w-full px-4 py-3.5 ${icon ? 'pl-12' : ''} 
               bg-white 
@@ -89,6 +92,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                 <AnimatePresence>
                     {error && (
                         <motion.p
+                            id={`${props.id || props.name}-error`}
                             initial={{ opacity: 0, y: -10 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -10 }}

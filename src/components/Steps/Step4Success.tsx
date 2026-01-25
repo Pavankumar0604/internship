@@ -2,23 +2,31 @@ import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import Confetti from 'react-confetti';
 import { QRCodeSVG } from 'qrcode.react';
-import { CheckCircle, Copy, Download, Share2, Award } from 'lucide-react';
+import { CheckCircle, Copy, Download, Share2, Award, Clock, Calendar, ExternalLink, Monitor } from 'lucide-react';
 import Button from '../ui/Button';
-import Card from '../ui/Card';
 import toast from 'react-hot-toast';
 
 interface Step4SuccessProps {
     enrollmentId: string;
     studentName: string;
     domain: string;
+    role?: 'student' | 'staff';
+    meetingData?: {
+        date: string;
+        time: string;
+        link: string;
+    };
 }
 
 const Step4Success: React.FC<Step4SuccessProps> = ({
     enrollmentId,
     studentName,
     domain,
+    role = 'student',
+    meetingData,
 }) => {
-    const [showConfetti, setShowConfetti] = useState(true);
+    const isStaff = role === 'staff';
+    const [showConfetti, setShowConfetti] = useState(!isStaff);
     const [windowSize, setWindowSize] = useState({
         width: window.innerWidth,
         height: window.innerHeight,
@@ -34,10 +42,9 @@ const Step4Success: React.FC<Step4SuccessProps> = ({
 
         window.addEventListener('resize', handleResize);
 
-        // Stop confetti after 5 seconds
         const timer = setTimeout(() => {
             setShowConfetti(false);
-        }, 5000);
+        }, 8000);
 
         return () => {
             window.removeEventListener('resize', handleResize);
@@ -47,219 +54,275 @@ const Step4Success: React.FC<Step4SuccessProps> = ({
 
     const handleCopyEnrollmentId = () => {
         navigator.clipboard.writeText(enrollmentId);
-        toast.success('Enrollment ID copied to clipboard!');
+        toast.success('Enrollment ID copied!');
     };
 
     const handleWhatsAppShare = () => {
         const whatsappNumber = import.meta.env.VITE_WHATSAPP_NUMBER || '9098855355';
-        const message = `🎉 I've successfully enrolled in the ${domain} internship program!\n\n📋 Enrollment ID: ${enrollmentId}\n\nLooking forward to starting this Monday! 🚀`;
+        const message = isStaff
+            ? `📄 Application Submitted! Enrollment ID: ${enrollmentId}. Waiting for approval.`
+            : `🎉 I've successfully enrolled in the ${domain} internship program!\n\n📋 Enrollment ID: ${enrollmentId}\n\nLooking forward to starting this Monday! 🚀`;
         const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
         window.open(whatsappUrl, '_blank');
     };
 
-    const handleDownloadReceipt = () => {
-        toast.success('Receipt download will be available via email shortly!');
-    };
-
     return (
         <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
+            initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            className="max-w-3xl mx-auto"
+            exit={{ opacity: 0, scale: 0.95 }}
+            className="max-w-3xl mx-auto px-4"
         >
-            {/* Confetti */}
-            {showConfetti && (
+            {!isStaff && showConfetti && (
                 <Confetti
                     width={windowSize.width}
                     height={windowSize.height}
                     recycle={false}
-                    numberOfPieces={500}
-                    gravity={0.3}
+                    numberOfPieces={600}
+                    gravity={0.2}
+                    colors={['#0ea5e9', '#38bdf8', '#7dd3fc', '#bae6fd']}
                 />
             )}
 
-            {/* Success Icon */}
-            <div className="text-center mb-6">
+            <div className="text-center mb-10">
                 <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
+                    initial={{ scale: 0, rotate: -10 }}
+                    animate={{ scale: 1, rotate: 0 }}
                     transition={{
                         type: 'spring',
-                        stiffness: 200,
+                        stiffness: 260,
+                        damping: 20,
                         delay: 0.2,
                     }}
                     className="inline-block relative"
                 >
-                    <div className="absolute inset-0 bg-primary-500 rounded-full blur-2xl opacity-20 animate-pulse" />
-                    <div className="relative p-5 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full shadow-lg">
-                        <CheckCircle className="w-12 h-12 text-white" />
-                    </div>
+                    {!isStaff ? (
+                        <>
+                            <div className="absolute inset-0 bg-primary-500 rounded-full blur-3xl opacity-30 animate-pulse" />
+                            <div className="relative p-6 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full shadow-2xl">
+                                <CheckCircle className="w-16 h-16 text-white" />
+                            </div>
+                        </>
+                    ) : (
+                        <div className="relative p-6 bg-amber-100 rounded-full shadow-xl border border-amber-200">
+                            <Clock className="w-16 h-16 text-amber-600" />
+                        </div>
+                    )}
                 </motion.div>
 
-                <motion.h2
+                <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4 }}
-                    className="text-3xl font-black text-secondary-900 mt-4 mb-1"
                 >
-                    Enrollment Successful! 🎉
-                </motion.h2>
-                <motion.p
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.5 }}
-                    className="text-secondary-500 font-medium"
-                >
-                    Welcome aboard, {studentName}!
-                </motion.p>
+                    <h2 className="text-4xl font-black text-secondary-900 mt-6 mb-2 tracking-tight">
+                        {isStaff ? 'Application Received' : 'You\'re All Set! 🎉'}
+                    </h2>
+                    <p className="text-secondary-500 text-lg font-medium max-w-lg mx-auto leading-relaxed">
+                        {isStaff ? `Thank you, ${studentName}. We've received your application and will review it shortly.` : `Welcome to the Mind Mesh family, ${studentName}! Your journey starts here.`}
+                    </p>
+                </motion.div>
+
+                {isStaff && (
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.6 }}
+                        className="mt-6 inline-flex items-center gap-2 text-amber-600 font-black bg-amber-50 px-6 py-2.5 rounded-full border border-amber-100 uppercase tracking-[0.15em] text-[10px]"
+                    >
+                        <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+                        Awaiting Verification
+                    </motion.div>
+                )}
             </div>
 
-            {/* Enrollment Details Card */}
             <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6 }}
+                transition={{ delay: 0.7 }}
             >
-                <Card className="p-6 mb-5 bg-white border-secondary-100 shadow-xl">
-                    <div className="grid md:grid-cols-2 gap-6">
-                        {/* Left: Details */}
-                        <div className="space-y-6">
-                            <div>
-                                <p className="text-secondary-500 text-sm mb-2">Enrollment ID</p>
-                                <div className="flex items-center gap-2">
-                                    <code className="text-xl font-black text-primary-600 font-mono">
+                <div className="glass p-6 sm:p-10 mb-8 rounded-[2rem] overflow-hidden relative group">
+                    <div className="absolute top-0 right-0 p-8 opacity-[0.03] pointer-events-none group-hover:scale-110 transition-transform duration-700">
+                        <Award className="w-48 h-48" />
+                    </div>
+
+                    <div className="grid md:grid-cols-2 gap-10 items-center">
+                        <div className="space-y-8">
+                            <div className="group/item">
+                                <p className="text-secondary-400 text-[10px] font-black uppercase tracking-[0.2em] mb-2">{isStaff ? 'Application Reference' : 'Official Enrollment ID'}</p>
+                                <div className="flex items-center gap-3">
+                                    <code className="text-2xl sm:text-3xl font-black text-primary-600 font-mono tracking-tighter">
                                         {enrollmentId}
                                     </code>
-                                    <button
+                                    <motion.button
+                                        whileHover={{ scale: 1.1 }}
+                                        whileTap={{ scale: 0.9 }}
                                         onClick={handleCopyEnrollmentId}
-                                        className="p-1.5 hover:bg-secondary-50 rounded-lg transition-colors"
-                                        title="Copy to clipboard"
+                                        className="p-2 bg-secondary-50 rounded-xl hover:text-primary-500 transition-colors"
                                     >
-                                        <Copy className="w-4 h-4 text-secondary-400 hover:text-primary-500" />
-                                    </button>
+                                        <Copy className="w-4 h-4" />
+                                    </motion.button>
                                 </div>
                             </div>
 
-                            <div>
-                                <p className="text-secondary-500 text-sm mb-2">Selected Domain</p>
-                                <div className="bg-primary-50 border border-primary-100 rounded-xl p-3">
-                                    <p className="text-primary-700 font-black">{domain}</p>
+                            <div className="space-y-4">
+                                <div className="p-4 bg-secondary-50/50 rounded-2xl border border-secondary-100/50">
+                                    <p className="text-secondary-400 text-[10px] font-black uppercase tracking-widest mb-1.5">Selected Domain</p>
+                                    <p className="text-lg font-black text-secondary-800">{domain}</p>
                                 </div>
-                            </div>
 
-                            <div className="bg-primary-50 border border-primary-100 rounded-xl p-3">
-                                <div className="flex items-center gap-2 text-primary-600">
-                                    <Award className="w-4 h-4" />
-                                    <p className="font-bold text-sm">Certificate Guaranteed</p>
-                                </div>
-                                <p className="text-primary-600/80 text-[11px] mt-0.5">
-                                    Complete the program to receive your certificate
-                                </p>
+                                {!isStaff && (
+                                    <div className="flex items-center gap-3 px-4 py-3 bg-primary-500/5 rounded-2xl border border-primary-500/10">
+                                        <Award className="w-5 h-5 text-primary-500" />
+                                        <div className="flex flex-col">
+                                            <span className="font-black text-primary-600 text-xs uppercase tracking-tight">Verified Enrollment</span>
+                                            <span className="text-[10px] text-secondary-500 font-medium">Certificate allocation initiated</span>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         </div>
 
-                        {/* Right: QR Code */}
-                        <div className="flex flex-col items-center justify-center">
-                            <p className="text-secondary-500 text-sm mb-4">Scan for Verification</p>
-                            <div className="bg-white p-4 rounded-2xl shadow-lg border border-secondary-100">
+                        <div className="flex flex-col items-center">
+                            <div className="relative p-6 bg-white rounded-[2.5rem] shadow-2xl shadow-primary-500/10 transition-transform hover:scale-105 duration-500">
                                 <QRCodeSVG
                                     value={`ENROLLMENT:${enrollmentId}|NAME:${studentName}|DOMAIN:${domain}`}
-                                    size={180}
+                                    size={160}
                                     level="H"
-                                    includeMargin={false}
+                                    includeMargin={true}
                                 />
+                                <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-primary-600 text-white text-[9px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest whitespace-nowrap shadow-lg">
+                                    Secure Passport
+                                </div>
                             </div>
-                            <p className="text-secondary-400 text-xs mt-3">Enrollment QR Code</p>
+                            <p className="text-secondary-400 text-[10px] font-bold uppercase tracking-[0.2em] mt-8">Digital Verification QR</p>
                         </div>
                     </div>
-                </Card>
+                </div>
             </motion.div>
 
-            {/* Action Buttons */}
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.8 }}
-                className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6"
+                transition={{ delay: 0.9 }}
+                className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10"
             >
                 <Button
                     variant="primary"
                     size="md"
                     onClick={handleWhatsAppShare}
-                    className="w-full shadow-lg"
+                    className="w-full shadow-xl shadow-primary-500/10 !rounded-2xl py-4 h-auto group"
                 >
-                    <Share2 size={18} />
-                    Share
+                    <Share2 size={18} className="group-hover:rotate-12 transition-transform" />
+                    <span className="font-black uppercase tracking-wider text-xs">{isStaff ? 'Contact Admin' : 'Share Success'}</span>
                 </Button>
+
+                {!isStaff && (
+                    <Button
+                        variant="secondary"
+                        size="md"
+                        onClick={() => toast.success('Sending receipt to your email...')}
+                        className="w-full !rounded-2xl py-4 h-auto group text-secondary-800 border-secondary-100"
+                    >
+                        <Download size={18} className="group-hover:-translate-y-1 transition-transform" />
+                        <span className="font-black uppercase tracking-wider text-xs">Receipt</span>
+                    </Button>
+                )}
+
                 <Button
                     variant="secondary"
                     size="md"
-                    onClick={handleDownloadReceipt}
-                    className="w-full"
+                    onClick={() => {
+                        window.print();
+                    }}
+                    className="w-full !rounded-2xl py-4 h-auto group text-secondary-800 border-secondary-100"
                 >
-                    <Download size={18} />
-                    Receipt
-                </Button>
-                <Button
-                    variant="secondary"
-                    size="md"
-                    onClick={handleCopyEnrollmentId}
-                    className="w-full"
-                >
-                    <Copy size={18} />
-                    Copy ID
+                    <Download size={18} className="group-hover:scale-110 transition-transform" />
+                    <span className="font-black uppercase tracking-wider text-xs">Print PDF</span>
                 </Button>
             </motion.div>
 
-            {/* Next Steps */}
             <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1 }}
-                className="bg-secondary-50 border border-secondary-200 rounded-2xl p-6"
+                transition={{ delay: 1.1 }}
+                className="bg-white border border-secondary-100 rounded-[2.5rem] p-8 sm:p-10 shadow-2xl shadow-secondary-200/50 relative overflow-hidden group"
             >
-                <h3 className="text-xl font-bold text-secondary-900 mb-4">📋 What's Next?</h3>
-                <div className="space-y-3">
-                    <div className="flex items-start gap-3">
-                        <div className="flex-shrink-0 w-6 h-6 bg-primary-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
-                            1
-                        </div>
-                        <p className="text-secondary-600">
-                            Check your email for enrollment confirmation and program details
-                        </p>
-                    </div>
-                    <div className="flex items-start gap-3">
-                        <div className="flex-shrink-0 w-6 h-6 bg-primary-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
-                            2
-                        </div>
-                        <p className="text-secondary-600">
-                            Join our WhatsApp group for updates and announcements
-                        </p>
-                    </div>
-                    <div className="flex items-start gap-3">
-                        <div className="flex-shrink-0 w-6 h-6 bg-primary-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
-                            3
-                        </div>
-                        <p className="text-secondary-600">
-                            Prepare for the program starting this Monday!
-                        </p>
-                    </div>
+                <div className="absolute top-0 right-0 p-12 opacity-[0.03] pointer-events-none group-hover:scale-110 transition-transform duration-700">
+                    <Clock className="w-40 h-40 text-secondary-900" />
                 </div>
-            </motion.div>
 
-            {/* Social Proof */}
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1.2 }}
-                className="mt-8 text-center"
-            >
-                <div className="inline-flex items-center gap-2 bg-white px-6 py-3 rounded-full shadow-sm border border-secondary-100">
-                    <span className="text-2xl">🎓</span>
-                    <p className="text-secondary-600 font-medium">
-                        You're now part of <span className="text-primary-600 font-bold">500+</span> certified students!
-                    </p>
+                <h3 className="text-2xl font-black text-secondary-900 mb-8 flex items-center gap-3">
+                    <span className="p-2 bg-primary-50 rounded-xl">
+                        <Monitor className="w-5 h-5 text-primary-500" />
+                    </span>
+                    Program Onboarding
+                </h3>
+
+                <div className="grid gap-6">
+                    {!isStaff && meetingData && (
+                        <div className="bg-primary-50/50 border border-primary-100 rounded-3xl p-6 hover:bg-primary-50 transition-colors">
+                            <div className="flex items-center gap-3 mb-6">
+                                <div className="flex h-3 w-3 relative">
+                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-400 opacity-75"></span>
+                                    <span className="relative inline-flex rounded-full h-3 w-3 bg-primary-500"></span>
+                                </div>
+                                <p className="font-black text-xs uppercase tracking-[0.3em] text-primary-600">Live Induction Link</p>
+                            </div>
+
+                            <div className="grid sm:grid-cols-2 gap-8 mb-8">
+                                <div className="flex items-center gap-4">
+                                    <div className="p-2.5 bg-white rounded-2xl shadow-sm">
+                                        <Calendar className="w-6 h-6 text-primary-500" />
+                                    </div>
+                                    <div>
+                                        <p className="text-[10px] text-secondary-400 uppercase font-bold tracking-widest mb-0.5">Start Date</p>
+                                        <p className="text-lg font-black text-secondary-800">{meetingData.date}</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-center gap-4">
+                                    <div className="p-2.5 bg-white rounded-2xl shadow-sm">
+                                        <Clock className="w-6 h-6 text-primary-500" />
+                                    </div>
+                                    <div>
+                                        <p className="text-[10px] text-secondary-400 uppercase font-bold tracking-widest mb-0.5">Session Time</p>
+                                        <p className="text-lg font-black text-secondary-800">{meetingData.time}</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <motion.a
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                                href={meetingData.link}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center justify-center gap-3 w-full bg-primary-500 text-white font-black py-5 rounded-2xl hover:bg-primary-600 transition-all shadow-xl shadow-primary-500/20 uppercase tracking-widest text-xs"
+                            >
+                                Enter Induction Portal
+                                <ExternalLink size={16} />
+                            </motion.a>
+                        </div>
+                    )}
+
+                    <div className="grid gap-4 mt-2">
+                        {(isStaff ? [
+                            "Administrator will review your profile credentials",
+                            "Email confirmation will be dispatched upon status update",
+                            "Access to internal tools will be provisioned post-approval"
+                        ] : [
+                            "Monitor your inbox for detailed program curriculum",
+                            "Join the official WhatsApp community for live updates",
+                            "Prepare your development environment by this Sunday"
+                        ]).map((step, i) => (
+                            <div key={i} className="flex items-center gap-4 group/step">
+                                <div className="flex-shrink-0 w-8 h-8 rounded-full border-2 border-primary-100 flex items-center justify-center text-xs font-black text-primary-500 group-hover/step:border-primary-500 group-hover/step:bg-primary-500 group-hover/step:text-white transition-all duration-300">
+                                    {i + 1}
+                                </div>
+                                <p className="text-secondary-600 text-sm font-medium">{step}</p>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </motion.div>
         </motion.div>

@@ -27,6 +27,7 @@ export const QUALIFICATIONS = [
 export type Qualification = (typeof QUALIFICATIONS)[number];
 
 export interface StudentProfile {
+    role: 'student' | 'staff'; // Added Role
     name: string;
     email?: string;
     phone: string;
@@ -52,6 +53,7 @@ export interface EnrollmentData {
 export type Enrollment = {
     id: string;
     enrollment_id: string;
+    role: 'student' | 'staff';
     name: string;
     email: string | null;
     phone: string | null;
@@ -64,7 +66,12 @@ export type Enrollment = {
     razorpay_order_id: string | null;
     razorpay_payment_id: string | null;
     amount: number;
-    status: 'pending' | 'paid' | 'verified' | 'rejected';
+    status: 'pending' | 'paid' | 'verified' | 'rejected' | 'waiting_approval' | 'approved';
+    approved_by?: string | null;
+    approved_at?: string | null;
+    meeting_link?: string | null;
+    meeting_date?: string | null;
+    meeting_time?: string | null;
     created_at: string;
     updated_at: string;
 };

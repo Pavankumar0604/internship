@@ -5,13 +5,16 @@ export interface ProgressBarProps {
     currentStep: number;
     totalSteps: number;
     seatsLeft?: number;
+    role?: 'student' | 'staff';
 }
 
 const ProgressBar: React.FC<ProgressBarProps> = ({
     currentStep,
     totalSteps,
     seatsLeft = 8,
+    role = 'student',
 }) => {
+    const isStaff = role === 'staff';
     const progress = (currentStep / totalSteps) * 100;
 
     return (
@@ -34,8 +37,9 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
                                     className="relative flex flex-col items-center"
                                 >
                                     <div
+                                        aria-label={`Step ${stepNumber}: ${isActive ? 'Current' : isCompleted ? 'Completed' : 'Upcoming'}`}
                                         className={`
-                      w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm
+                      w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center font-bold text-xs sm:text-sm
                       transition-all duration-500 z-10
                       ${isCompleted
                                                 ? 'bg-primary-500 text-white shadow-md'
@@ -60,8 +64,14 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
                                     <span className={`text-xs mt-2 hidden sm:block font-medium ${isActive ? 'text-primary-600' : 'text-secondary-400'}`}>
                                         {stepNumber === 1 && 'Profile'}
                                         {stepNumber === 2 && 'Domain'}
-                                        {stepNumber === 3 && 'Payment'}
-                                        {stepNumber === 4 && 'Success'}
+                                        {isStaff ? (
+                                            stepNumber === 3 && 'Success'
+                                        ) : (
+                                            <>
+                                                {stepNumber === 3 && 'Payment'}
+                                                {stepNumber === 4 && 'Success'}
+                                            </>
+                                        )}
                                     </span>
                                 </motion.div>
                                 {index < totalSteps - 1 && (
@@ -91,16 +101,18 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
                     >
                         {Math.round(progress)}% Complete
                     </motion.div>
-                    <motion.div
-                        animate={{ scale: [1, 1.05, 1] }}
-                        transition={{ duration: 2, repeat: Infinity }}
-                        className="bg-red-50 px-3 py-1 rounded-full border border-red-100 items-center flex gap-1.5"
-                    >
-                        <span className="text-red-500 text-lg">🔥</span>
-                        <span className="text-red-600 font-bold text-xs sm:text-sm">
-                            Only {seatsLeft} Seats Left!
-                        </span>
-                    </motion.div>
+                    {!isStaff && (
+                        <motion.div
+                            animate={{ scale: [1, 1.05, 1] }}
+                            transition={{ duration: 2, repeat: Infinity }}
+                            className="bg-red-50 px-3 py-1 rounded-full border border-red-100 items-center flex gap-1.5"
+                        >
+                            <span className="text-red-500 text-lg">🔥</span>
+                            <span className="text-red-600 font-bold text-xs sm:text-sm">
+                                Only {seatsLeft} Seats Left!
+                            </span>
+                        </motion.div>
+                    )}
                 </div>
             </div>
         </div>

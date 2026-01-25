@@ -131,10 +131,12 @@ const FileUpload: React.FC<FileUploadProps> = ({
                     >
                         <input
                             type="file"
+                            id="resume-upload"
                             accept={accept}
                             onChange={handleFileInput}
                             className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                             disabled={isUploading}
+                            aria-label="Upload your resume in PDF or DOCX format"
                         />
 
                         <div className="flex flex-col items-center justify-center text-center">
