@@ -44,8 +44,8 @@ const Step1Profile: React.FC<Step1ProfileProps> = ({ onNext, initialData }) => {
             ...data,
             name: DOMPurify.sanitize(data.name).trim(),
             college: data.college ? DOMPurify.sanitize(data.college).trim() : undefined,
-            email: DOMPurify.sanitize(data.email).trim(),
-            phone: DOMPurify.sanitize(data.phone).trim(),
+            email: data.email ? DOMPurify.sanitize(data.email).trim() : undefined,
+            phone: DOMPurify.sanitize(data.phone || '').trim(),
         };
 
         onNext({
