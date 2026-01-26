@@ -300,7 +300,7 @@ function App() {
     }
 
     return (
-        <div className="min-h-screen bg-secondary-50 text-secondary-800 font-sans transition-colors duration-300">
+        <div className="min-h-screen bg-background text-text-primary font-sans transition-colors duration-300">
             {/* Toast Notifications */}
             <Toaster
                 position="top-center"
@@ -399,7 +399,7 @@ function App() {
             </main>
 
             {/* Footer */}
-            <footer className="border-t border-secondary-200 py-8 bg-white transition-colors duration-300">
+            <footer className="border-t border-border py-8 bg-surface transition-colors duration-300">
                 <div className="container mx-auto px-4 text-center">
                     <p className="text-secondary-500 text-sm font-medium">
                         © 2026 Mind Mesh Internship Program. All rights reserved.

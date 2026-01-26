@@ -36,13 +36,18 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             }
         };
 
-        const hasValue = value !== undefined && value !== '';
+
 
         return (
             <div className="relative w-full">
+                {label && (
+                    <label className="block mb-2 text-sm font-semibold text-text-secondary">
+                        {label}
+                    </label>
+                )}
                 <div className="relative">
                     {icon && (
-                        <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 z-10">
+                        <div className="absolute left-4 top-1/2 -translate-y-1/2 text-text-secondary z-10">
                             {icon}
                         </div>
                     )}
@@ -58,35 +63,16 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                         aria-describedby={error ? `${props.id || props.name}-error` : undefined}
                         className={`
               w-full px-4 py-3.5 ${icon ? 'pl-12' : ''} 
-              bg-white 
+              bg-surface 
               border-2 rounded-xl
-              ${error ? 'border-red-500' : isFocused ? 'border-primary-500' : 'border-secondary-200'}
-              text-secondary-900 placeholder-transparent
+              ${error ? 'border-red-500' : isFocused ? 'border-primary-500' : 'border-border'}
+              text-secondary-900 placeholder:text-secondary-500
               focus:outline-none focus:ring-4 focus:ring-primary-500/10
               transition-all duration-300
               ${className}
             `}
                         {...props}
                     />
-                    {label && (
-                        <motion.label
-                            initial={false}
-                            animate={{
-                                top: isFocused || hasValue ? '0' : '50%',
-                                y: isFocused || hasValue ? '-50%' : '-50%',
-                                scale: isFocused || hasValue ? 0.85 : 1,
-                                left: isFocused || hasValue ? (icon ? '3rem' : '1rem') : icon ? '3rem' : '1rem',
-                            }}
-                            transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-                            className={`
-                absolute origin-left pointer-events-none bg-white px-1
-                ${isFocused || hasValue ? 'text-primary-600' : 'text-secondary-400'}
-                font-medium transition-colors duration-300
-              `}
-                        >
-                            {label}
-                        </motion.label>
-                    )}
                 </div>
 
                 <AnimatePresence>

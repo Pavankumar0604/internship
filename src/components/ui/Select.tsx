@@ -13,7 +13,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
         return (
             <div className="relative w-full">
                 {label && (
-                    <label className="block mb-2 text-sm font-semibold text-secondary-700">
+                    <label className="block mb-2 text-sm font-semibold text-text-secondary">
                         {label}
                     </label>
                 )}
@@ -22,9 +22,9 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
                         ref={ref}
                         className={`
               w-full px-4 py-4 pr-12
-              bg-white
+              bg-surface
               border-2 rounded-xl
-              ${error ? 'border-red-500' : 'border-secondary-200'}
+              ${error ? 'border-red-500' : 'border-border'}
               text-secondary-900
               focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500
               appearance-none cursor-pointer

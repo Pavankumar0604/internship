@@ -148,7 +148,7 @@ const Step3Payment: React.FC<Step3PaymentProps> = ({
             </Card>
 
             {/* Security Badge */}
-            <div className="bg-white border border-secondary-200 rounded-xl p-3 mb-5 shadow-sm">
+            <div className="bg-surface border border-border rounded-xl p-3 mb-5 shadow-sm">
                 <div className="flex items-center gap-3">
                     <Shield className="w-5 h-5 text-primary-500" />
                     <div>
@@ -185,7 +185,7 @@ const Step3Payment: React.FC<Step3PaymentProps> = ({
                     size="md"
                     onClick={onBack}
                     disabled={isLoading}
-                    className="w-full bg-white border-secondary-200 text-secondary-700 hover:bg-secondary-50"
+                    className="w-full bg-surface border-border text-secondary-400 hover:text-white hover:bg-surface/80"
                 >
                     ← Back to Domain Selection
                 </Button>

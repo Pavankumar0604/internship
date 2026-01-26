@@ -7,7 +7,7 @@ const ParticlesBackground = lazy(() => import('./ui/ParticlesBackground'));
 
 const Hero: React.FC = () => {
     return (
-        <div className="relative pt-10 pb-12 overflow-hidden bg-slate-50 transition-colors duration-300">
+        <div className="relative pt-10 pb-12 overflow-hidden bg-background transition-colors duration-300">
             {/* Dynamic Particles Background */}
             <Suspense fallback={null}>
                 <ParticlesBackground />
@@ -21,7 +21,7 @@ const Hero: React.FC = () => {
                         rotate: [0, 90, 0],
                     }}
                     transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                    className="absolute -top-24 -left-24 w-[600px] h-[600px] bg-primary-200/40 rounded-full blur-[100px]"
+                    className="absolute -top-24 -left-24 w-[600px] h-[600px] bg-primary-900/20 rounded-full blur-[100px]"
                 />
                 <motion.div
                     animate={{
@@ -29,7 +29,7 @@ const Hero: React.FC = () => {
                         rotate: [0, -90, 0],
                     }}
                     transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-                    className="absolute top-1/2 -right-24 w-[500px] h-[500px] bg-sky-200/40 rounded-full blur-[100px]"
+                    className="absolute top-1/2 -right-24 w-[500px] h-[500px] bg-red-900/10 rounded-full blur-[100px]"
                 />
             </div>
 
@@ -40,9 +40,9 @@ const Hero: React.FC = () => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5 }}
                     >
-                        <h1 className="text-5xl md:text-7xl font-black tracking-tight mb-4 text-secondary-900 leading-tight">
+                        <h1 className="text-5xl md:text-7xl font-black tracking-tight mb-4 text-white leading-tight">
                             15 Days Internship <br />
-                            <span className="bg-gradient-to-r from-primary-600 via-sky-500 to-primary-600 bg-[length:200%_auto] animate-gradient bg-clip-text text-transparent">
+                            <span className="bg-gradient-to-r from-primary-600 via-primary-400 to-primary-600 bg-[length:200%_auto] animate-gradient bg-clip-text text-transparent">
                                 Training Program
                             </span>
                         </h1>
@@ -56,7 +56,7 @@ const Hero: React.FC = () => {
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ delay: 0.2 }}
-                        className="bg-white/60 backdrop-blur-md text-primary-700 px-6 py-2 rounded-xl inline-block border border-primary-100 shadow-sm mb-10"
+                        className="bg-surface/60 backdrop-blur-md text-primary-500 px-6 py-2 rounded-xl inline-block border border-border shadow-sm mb-10"
                     >
                         <p className="text-sm font-bold flex items-center gap-2">
                             <span className="animate-bounce">💡</span>
@@ -77,7 +77,7 @@ const Hero: React.FC = () => {
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.3 + (i * 0.1) }}
                                 whileHover={{ y: -5, transition: { duration: 0.2 } }}
-                                className="flex flex-col items-center p-4 bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-secondary-100 hover:border-primary-200 hover:shadow-md transition-all cursor-default group"
+                                className="flex flex-col items-center p-4 bg-surface/80 backdrop-blur-sm rounded-xl shadow-sm border border-border hover:border-primary-500/50 hover:shadow-md transition-all cursor-default group"
                             >
                                 <item.icon className={`w-6 h-6 ${item.color} mb-2 group-hover:scale-110 transition-transform`} />
                                 <p className="text-secondary-800 font-bold text-[10px] uppercase tracking-wider">{item.text}</p>
@@ -98,7 +98,7 @@ const Hero: React.FC = () => {
                                 initial={{ opacity: 0, x: -10 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 transition={{ delay: 0.5 + (i * 0.1) }}
-                                className="flex items-center gap-2 bg-white/40 backdrop-blur-sm px-4 py-2 rounded-full border border-secondary-100 hover:bg-white/60 transition-colors"
+                                className="flex items-center gap-2 bg-surface/40 backdrop-blur-sm px-4 py-2 rounded-full border border-border hover:bg-surface/60 transition-colors"
                             >
                                 <CheckCircle className="w-4 h-4 text-success" />
                                 <span className="font-bold text-secondary-700 text-[10px] uppercase tracking-wider">{benefit}</span>

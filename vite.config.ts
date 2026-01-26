@@ -3,6 +3,8 @@ import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 import viteCompression from 'vite-plugin-compression';
 
+import obfuscator from 'rollup-plugin-obfuscator';
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -79,6 +81,42 @@ export default defineConfig({
           }
         ]
       }
+    }),
+    // Anti-Clone: Obfuscation
+    obfuscator({
+      global: true,
+      options: {
+        compact: true,
+        controlFlowFlattening: true,
+        controlFlowFlatteningThreshold: 0.75,
+        deadCodeInjection: true,
+        deadCodeInjectionThreshold: 0.4,
+        debugProtection: true,
+        debugProtectionInterval: 2000,
+        disableConsoleOutput: true,
+        identifierNamesGenerator: 'hexadecimal',
+        log: false,
+        numbersToExpressions: true,
+        renameGlobals: false,
+        selfDefending: true,
+        simplify: true,
+        splitStrings: true,
+        splitStringsChunkLength: 10,
+        stringArray: true,
+        stringArrayCallsTransform: true,
+        stringArrayEncoding: ['rc4'],
+        stringArrayIndexShift: true,
+        stringArrayRotate: true,
+        stringArrayShuffle: true,
+        stringArrayWrappersCount: 1,
+        stringArrayWrappersChainedCalls: true,
+        stringArrayWrappersParametersMaxCount: 2,
+        stringArrayWrappersType: 'variable',
+        stringArrayThreshold: 0.75,
+        target: 'browser-no-eval',
+        transformObjectKeys: true,
+        unicodeEscapeSequence: false
+      }
     })
   ],
   resolve: {
@@ -88,7 +126,24 @@ export default defineConfig({
   },
   build: {
     target: 'esnext',
-    minify: 'esbuild',
+    minify: 'terser', // Switch to terser for better security minification
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+        ecma: 2020,
+        module: true,
+        toplevel: true,
+        unsafe_arrows: true,
+      },
+      mangle: {
+        module: true,
+        toplevel: true,
+      },
+      format: {
+        comments: false,
+      }
+    },
     rollupOptions: {
       output: {
         manualChunks: {
@@ -100,9 +155,6 @@ export default defineConfig({
     },
     chunkSizeWarningLimit: 1000,
     cssCodeSplit: true,
-    sourcemap: false,
-  },
-  esbuild: {
-    drop: ['console', 'debugger'],
+    sourcemap: false, // Security: Disable source maps
   },
 });
