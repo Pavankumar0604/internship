@@ -25,7 +25,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
               bg-surface
               border-2 rounded-xl
               ${error ? 'border-red-500' : 'border-border'}
-              text-secondary-900
+              text-white
               focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500
               appearance-none cursor-pointer
               transition-all duration-300

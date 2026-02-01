@@ -80,7 +80,7 @@ const Hero: React.FC = () => {
                                 className="flex flex-col items-center p-4 bg-surface/80 backdrop-blur-sm rounded-xl shadow-sm border border-border hover:border-primary-500/50 hover:shadow-md transition-all cursor-default group"
                             >
                                 <item.icon className={`w-6 h-6 ${item.color} mb-2 group-hover:scale-110 transition-transform`} />
-                                <p className="text-secondary-800 font-bold text-[10px] uppercase tracking-wider">{item.text}</p>
+                                <p className="text-white font-bold text-[10px] uppercase tracking-wider">{item.text}</p>
                             </motion.div>
                         ))}
                     </div>
@@ -101,7 +101,7 @@ const Hero: React.FC = () => {
                                 className="flex items-center gap-2 bg-surface/40 backdrop-blur-sm px-4 py-2 rounded-full border border-border hover:bg-surface/60 transition-colors"
                             >
                                 <CheckCircle className="w-4 h-4 text-success" />
-                                <span className="font-bold text-secondary-700 text-[10px] uppercase tracking-wider">{benefit}</span>
+                                <span className="font-bold text-text-muted text-[10px] uppercase tracking-wider">{benefit}</span>
                             </motion.div>
                         ))}
                     </div>

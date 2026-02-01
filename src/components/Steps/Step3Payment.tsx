@@ -102,31 +102,31 @@ const Step3Payment: React.FC<Step3PaymentProps> = ({
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ type: 'spring', stiffness: 200 }}
-                    className="inline-block p-3 bg-primary-50 rounded-xl mb-3 border border-primary-100"
+                    className="inline-block p-3 bg-surface rounded-xl mb-3 border border-primary-500/30"
                 >
                     <CreditCard className="w-6 h-6 text-primary-500" />
                 </motion.div>
-                <h2 className="text-2xl font-black text-secondary-900 mb-1">Payment</h2>
+                <h2 className="text-2xl font-black text-white mb-1">Payment</h2>
                 <p className="text-secondary-500 text-sm">Secure your seat in the program</p>
             </div>
 
             {/* Enrollment Summary */}
             <Card className="p-5 mb-5">
-                <h3 className="text-lg font-black text-secondary-900 mb-3">Enrollment Summary</h3>
+                <h3 className="text-lg font-black text-white mb-3">Enrollment Summary</h3>
 
                 <div className="space-y-4">
                     <div className="flex justify-between items-start">
                         <div>
                             <p className="text-secondary-500 text-sm">Student Name</p>
-                            <p className="text-secondary-900 font-semibold">{profile.name}</p>
+                            <p className="text-white font-semibold">{profile.name}</p>
                         </div>
                         <div className="text-right">
                             <p className="text-secondary-500 text-sm">Contact</p>
-                            <p className="text-secondary-900 font-semibold">{profile.phone}</p>
+                            <p className="text-white font-semibold">{profile.phone}</p>
                         </div>
                     </div>
 
-                    <div className="border-t border-secondary-200 pt-4">
+                    <div className="border-t border-border pt-4">
                         <p className="text-secondary-500 text-sm mb-2">Selected Domains</p>
                         <div className="space-y-2">
                             {domains.map(d => (
@@ -138,9 +138,9 @@ const Step3Payment: React.FC<Step3PaymentProps> = ({
                         </div>
                     </div>
 
-                    <div className="border-t border-secondary-200 pt-4">
+                    <div className="border-t border-border pt-4">
                         <div className="flex justify-between items-center text-lg font-bold">
-                            <p className="text-secondary-900">Total Payable Amount</p>
+                            <p className="text-white">Total Payable Amount</p>
                             <p className="text-primary-600">₹{totalAmount}</p>
                         </div>
                     </div>
@@ -152,7 +152,7 @@ const Step3Payment: React.FC<Step3PaymentProps> = ({
                 <div className="flex items-center gap-3">
                     <Shield className="w-5 h-5 text-primary-500" />
                     <div>
-                        <p className="text-secondary-900 font-bold text-[13px]">Secure Payment</p>
+                        <p className="text-white font-bold text-[13px]">Secure Payment</p>
                         <p className="text-secondary-500 text-[11px]">
                             Powered by Razorpay • 256-bit SSL Encryption
                         </p>

@@ -115,7 +115,7 @@ const Step4Success: React.FC<Step4SuccessProps> = ({
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4 }}
                 >
-                    <h2 className="text-4xl font-black text-secondary-900 mt-6 mb-2 tracking-tight">
+                    <h2 className="text-4xl font-black text-white mt-6 mb-2 tracking-tight">
                         {isStaff ? 'Application Received' : 'You\'re All Set! 🎉'}
                     </h2>
                     <p className="text-secondary-500 text-lg font-medium max-w-lg mx-auto leading-relaxed">
@@ -252,8 +252,8 @@ const Step4Success: React.FC<Step4SuccessProps> = ({
                     <Clock className="w-40 h-40 text-secondary-900" />
                 </div>
 
-                <h3 className="text-2xl font-black text-secondary-900 mb-8 flex items-center gap-3">
-                    <span className="p-2 bg-primary-50 rounded-xl">
+                <h3 className="text-2xl font-black text-white mb-8 flex items-center gap-3">
+                    <span className="p-2 bg-surface rounded-xl border border-primary-500/30">
                         <Monitor className="w-5 h-5 text-primary-500" />
                     </span>
                     Program Onboarding
@@ -280,7 +280,7 @@ const Step4Success: React.FC<Step4SuccessProps> = ({
                                     </div>
                                     <div>
                                         <p className="text-[10px] text-secondary-400 uppercase font-bold tracking-widest mb-0.5">Start Date</p>
-                                        <p className="text-lg font-black text-secondary-800">{meetingData.date}</p>
+                                        <p className="text-lg font-black text-white">{meetingData.date}</p>
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-4 relative z-10">
@@ -289,7 +289,7 @@ const Step4Success: React.FC<Step4SuccessProps> = ({
                                     </div>
                                     <div>
                                         <p className="text-[10px] text-secondary-400 uppercase font-bold tracking-widest mb-0.5">Session Time</p>
-                                        <p className="text-lg font-black text-secondary-800">{meetingData.time}</p>
+                                        <p className="text-lg font-black text-white">{meetingData.time}</p>
                                     </div>
                                 </div>
                             </div>

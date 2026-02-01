@@ -66,7 +66,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
               bg-surface 
               border-2 rounded-xl
               ${error ? 'border-red-500' : isFocused ? 'border-primary-500' : 'border-border'}
-              text-secondary-900 placeholder:text-secondary-500
+              text-white placeholder:text-text-muted
               focus:outline-none focus:ring-4 focus:ring-primary-500/10
               transition-all duration-300
               ${className}

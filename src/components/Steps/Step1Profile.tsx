@@ -66,11 +66,11 @@ const Step1Profile: React.FC<Step1ProfileProps> = ({ onNext, initialData }) => {
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ type: 'spring', stiffness: 200 }}
-                    className="inline-block p-3 bg-primary-50 rounded-xl mb-3 border border-primary-100"
+                    className="inline-block p-3 bg-surface rounded-xl mb-3 border border-primary-500/30"
                 >
                     <User className="w-6 h-6 text-primary-500" />
                 </motion.div>
-                <h2 className="text-2xl font-black text-secondary-900 mb-1">Student Profile</h2>
+                <h2 className="text-2xl font-black text-white mb-1">Student Profile</h2>
                 <p className="text-secondary-500 text-sm">
                     Let's start with your basic information
                 </p>
@@ -148,7 +148,7 @@ const Step1Profile: React.FC<Step1ProfileProps> = ({ onNext, initialData }) => {
 
                 {/* Resume Upload */}
                 <div>
-                    <label className="block mb-3 text-sm font-semibold text-secondary-700">
+                    <label className="block mb-3 text-sm font-semibold text-text-muted">
                         Upload Resume
                     </label>
                     <FileUpload

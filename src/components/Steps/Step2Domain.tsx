@@ -75,14 +75,14 @@ const Step2Domain: React.FC<Step2DomainProps> = ({
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ type: 'spring', stiffness: 200 }}
-                    className="inline-block p-3 bg-primary-50 rounded-xl mb-3 border border-primary-100"
+                    className="inline-block p-3 bg-surface rounded-xl mb-3 border border-primary-500/30"
                 >
                     <Zap className="w-6 h-6 text-primary-500" />
                 </motion.div>
                 <h2 className="text-3xl font-black text-secondary-900 mb-1">
                     {isStaff ? 'Course Specialization' : 'Professional Course Selection'}
                 </h2>
-                <p className="text-secondary-500 font-medium text-sm">
+                <p className="text-text-muted font-medium text-sm">
                     {isStaff ? 'Select the domain you will be assisting with.' : 'Customize your training program. You can select one or both courses.'}
                 </p>
             </div>
@@ -123,12 +123,12 @@ const Step2Domain: React.FC<Step2DomainProps> = ({
                                         <Icon className="w-10 h-10" />
                                     </div>
                                     <div>
-                                        <h3 className={`text-2xl font-bold mb-1 ${isSelected ? 'text-white' : 'text-secondary-800'}`}>
+                                        <h3 className={`text-2xl font-bold mb-1 ${isSelected ? 'text-white' : 'text-white'}`}>
                                             {domain.title}
                                         </h3>
                                         <p className="text-secondary-500 font-bold text-sm">{domain.subtitle}</p>
                                     </div>
-                                    <div className={`text-3xl font-black ${isSelected ? 'text-white' : 'text-secondary-900'}`}>
+                                    <div className={`text-3xl font-black ${isSelected ? 'text-white' : 'text-white'}`}>
                                         {isStaff ? 'Staff Track' : `₹${domain.price}`}
                                     </div>
                                 </div>
@@ -139,7 +139,7 @@ const Step2Domain: React.FC<Step2DomainProps> = ({
                                         {domain.subcourses?.map((sc, idx) => (
                                             <div key={idx} className="flex items-center gap-1.5">
                                                 <div className="w-1.5 h-1.5 rounded-full bg-primary-400" />
-                                                <span className="text-[11px] font-bold text-secondary-600">{sc}</span>
+                                                <span className="text-[11px] font-bold text-text-muted">{sc}</span>
                                             </div>
                                         ))}
                                     </div>
