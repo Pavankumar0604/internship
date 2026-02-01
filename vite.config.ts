@@ -87,18 +87,15 @@ export default defineConfig({
       global: true,
       options: {
         compact: true,
-        controlFlowFlattening: true,
-        controlFlowFlatteningThreshold: 0.75,
-        deadCodeInjection: true,
-        deadCodeInjectionThreshold: 0.4,
-        debugProtection: true,
-        debugProtectionInterval: 2000,
-        disableConsoleOutput: true,
+        controlFlowFlattening: false, // Disabled as it often breaks production logic
+        deadCodeInjection: false, // Disabled to reduce bundle size and issues
+        debugProtection: false, // CRITICAL: Disable to prevent black screens on Vercel
+        disableConsoleOutput: false, // Enable for debugging
         identifierNamesGenerator: 'hexadecimal',
         log: false,
         numbersToExpressions: true,
         renameGlobals: false,
-        selfDefending: true,
+        selfDefending: false, // Disable to allow Vercel scripts to coexist
         simplify: true,
         splitStrings: true,
         splitStringsChunkLength: 10,
