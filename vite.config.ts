@@ -82,20 +82,21 @@ export default defineConfig({
         ]
       }
     }),
-    // Anti-Clone: Obfuscation
+    // Temporarily disabled obfuscator to fix black screen issue
+    /*
     obfuscator({
       global: true,
       options: {
         compact: true,
-        controlFlowFlattening: false, // Disabled as it often breaks production logic
-        deadCodeInjection: false, // Disabled to reduce bundle size and issues
-        debugProtection: false, // CRITICAL: Disable to prevent black screens on Vercel
-        disableConsoleOutput: false, // Enable for debugging
+        controlFlowFlattening: false, 
+        deadCodeInjection: false, 
+        debugProtection: false, 
+        disableConsoleOutput: false, 
         identifierNamesGenerator: 'hexadecimal',
         log: false,
         numbersToExpressions: true,
         renameGlobals: false,
-        selfDefending: false, // Disable to allow Vercel scripts to coexist
+        selfDefending: false, 
         simplify: true,
         splitStrings: true,
         splitStringsChunkLength: 10,
@@ -115,6 +116,7 @@ export default defineConfig({
         unicodeEscapeSequence: false
       }
     })
+    */
   ],
   resolve: {
     alias: {
