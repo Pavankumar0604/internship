@@ -118,12 +118,12 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBack }) => {
         <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="min-h-screen bg-[#F8FAFC] pb-12"
+            className="min-h-screen bg-background pb-12"
         >
             {/* Header Code Omitted for Brevity - Keeping Wrapper */}
             {/* Premium Admin Header */}
             <div className="sticky top-0 z-50">
-                <div className="absolute inset-0 bg-white/70 backdrop-blur-2xl border-b border-secondary-100/50 shadow-sm" />
+                <div className="absolute inset-0 bg-background/80 backdrop-blur-2xl border-b border-border shadow-sm" />
 
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20">
                     <div className="flex items-center justify-between h-16">
@@ -132,18 +132,18 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBack }) => {
                                 whileHover={{ scale: 1.05, x: -2 }}
                                 whileTap={{ scale: 0.95 }}
                                 onClick={onBack}
-                                className="group flex items-center justify-center p-2.5 bg-white border border-secondary-100 hover:border-primary-200 hover:bg-primary-50 rounded-2xl text-secondary-400 hover:text-primary-600 transition-all shadow-sm"
+                                className="group flex items-center justify-center p-2.5 bg-surface border border-border hover:border-primary-500/50 hover:bg-primary-500/10 rounded-2xl text-secondary-400 hover:text-primary-500 transition-all shadow-sm"
                             >
                                 <ArrowLeft size={20} />
                             </motion.button>
 
                             <div className="flex items-center gap-3">
-                                <div className="w-9 h-9 bg-gradient-to-br from-primary-500 to-primary-700 rounded-xl flex items-center justify-center text-white shadow-md shadow-primary-500/10">
+                                <div className="w-9 h-9 bg-primary-600 rounded-xl flex items-center justify-center text-white shadow-md shadow-primary-500/20">
                                     <LayoutDashboard size={18} />
                                 </div>
                                 <div className="flex items-center gap-2">
-                                    <h1 className="text-lg font-black text-secondary-900 tracking-tight">Admin Console</h1>
-                                    <div className="flex items-center bg-primary-50 px-2 py-0.5 rounded-full border border-primary-100">
+                                    <h1 className="text-lg font-black text-white tracking-tight">Admin Console</h1>
+                                    <div className="flex items-center bg-primary-900/30 px-2 py-0.5 rounded-full border border-primary-500/30">
                                         <span className="flex h-1.5 w-1.5 relative">
                                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-400 opacity-75"></span>
                                             <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-primary-500"></span>
@@ -245,7 +245,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBack }) => {
                 </div>
 
                 {/* Tabs */}
-                <div className="flex items-center gap-1 bg-secondary-100/50 p-1.5 rounded-3xl mb-8 w-fit border border-secondary-200 shadow-sm">
+                <div className="flex items-center gap-1 bg-surface p-1.5 rounded-3xl mb-8 w-fit border border-border shadow-sm">
                     {[
                         { id: 'enrollments', label: 'Enrollments', icon: Users },
                         { id: 'staff-approvals', label: 'Staff Approvals', icon: UserCheck },
@@ -256,8 +256,8 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBack }) => {
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id as any)}
                             className={`flex items-center gap-2 px-6 py-2.5 rounded-2xl text-xs font-black uppercase tracking-wider transition-all ${activeTab === tab.id
-                                ? 'bg-white text-primary-600 shadow-md scale-[1.02]'
-                                : 'text-secondary-400 hover:text-secondary-600 hover:bg-white/50'
+                                ? 'bg-primary-600 text-white shadow-md scale-[1.02]'
+                                : 'text-secondary-400 hover:text-white hover:bg-secondary-800'
                                 }`}
                         >
                             <tab.icon size={16} />
@@ -267,10 +267,10 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBack }) => {
                 </div>
 
                 {/* Main Content Area */}
-                <div className="bg-white rounded-3xl shadow-card border border-secondary-100 overflow-hidden">
+                <div className="bg-surface rounded-3xl shadow-card border border-border overflow-hidden">
                     {/* Table Filters */}
                     {(activeTab === 'enrollments' || activeTab === 'staff-approvals') && (
-                        <div className="p-6 border-b border-secondary-100 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white/50 backdrop-blur-sm">
+                        <div className="p-6 border-b border-border flex flex-col md:flex-row md:items-center justify-between gap-4 bg-surface/50 backdrop-blur-sm">
                             <div className="relative flex-1 max-w-md group">
                                 <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 text-secondary-400 group-focus-within:text-primary-500 transition-colors" size={18} />
                                 <input
@@ -313,7 +313,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBack }) => {
                     <div className="hidden md:block overflow-x-auto">
                         {(activeTab === 'enrollments' || activeTab === 'staff-approvals') && (
                             <table className="w-full text-left">
-                                <thead className="bg-[#FAFBFD] border-b border-secondary-100">
+                                <thead className="bg-surface border-b border-border">
                                     <tr>
                                         <th className="px-6 py-5 text-[10px] font-black text-secondary-400 uppercase tracking-widest">Details</th>
                                         <th className="px-6 py-5 text-[10px] font-black text-secondary-400 uppercase tracking-widest">Role/Domain</th>
@@ -324,7 +324,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBack }) => {
                                         {activeTab === 'enrollments' && <th className="px-6 py-5 text-[10px] font-black text-secondary-400 uppercase tracking-widest">Date</th>}
                                     </tr>
                                 </thead>
-                                <tbody className="divide-y divide-secondary-50">
+                                <tbody className="divide-y divide-border">
                                     <AnimatePresence mode="popLayout">
                                         {filteredEnrollments.map((enrollment, idx) => (
                                             <motion.tr
@@ -333,7 +333,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBack }) => {
                                                 animate={{ opacity: 1 }}
                                                 exit={{ opacity: 0 }}
                                                 transition={{ delay: idx * 0.05 }}
-                                                className="hover:bg-secondary-50/50 transition-colors group cursor-default"
+                                                className="hover:bg-primary-900/10 transition-colors group cursor-default"
                                             >
                                                 <td className="px-6 py-4">
                                                     <div className="flex items-center gap-3">
@@ -341,7 +341,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBack }) => {
                                                             {enrollment.name.charAt(0)}
                                                         </div>
                                                         <div>
-                                                            <p className="font-bold text-secondary-900 group-hover:text-primary-600 transition-colors">
+                                                            <p className="font-bold text-white group-hover:text-primary-600 transition-colors">
                                                                 {enrollment.name}
                                                             </p>
                                                             <p className="text-secondary-500 text-[11px] font-medium">{enrollment.enrollment_id}</p>
@@ -359,7 +359,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBack }) => {
                                                     </div>
                                                 </td>
                                                 <td className="px-6 py-4">
-                                                    <span className="text-sm font-black text-secondary-900">₹{enrollment.amount}</span>
+                                                    <span className="text-sm font-black text-white">₹{enrollment.amount}</span>
                                                 </td>
                                                 {activeTab === 'enrollments' && (
                                                     <td className="px-6 py-4">
@@ -414,7 +414,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBack }) => {
                             /* ... reusing existing table logic ... */
                             activeTab === 'razorpay-payments' ? (
                                 <table className="w-full text-left">
-                                    <thead className="bg-[#FAFBFD] border-b border-secondary-100">
+                                    <thead className="bg-surface border-b border-border">
                                         <tr>
                                             <th className="px-6 py-5 text-[10px] font-black text-secondary-400 uppercase tracking-widest">Payment ID</th>
                                             <th className="px-6 py-5 text-[10px] font-black text-secondary-400 uppercase tracking-widest">Contact</th>
@@ -454,7 +454,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBack }) => {
                                 </table>
                             ) : (
                                 <table className="w-full text-left">
-                                    <thead className="bg-[#FAFBFD] border-b border-secondary-100">
+                                    <thead className="bg-surface border-b border-border">
                                         <tr>
                                             <th className="px-6 py-5 text-[10px] font-black text-secondary-400 uppercase tracking-widest">Settlement ID</th>
                                             <th className="px-6 py-5 text-[10px] font-black text-secondary-400 uppercase tracking-widest">Amount</th>

@@ -246,7 +246,7 @@ const Step4Success: React.FC<Step4SuccessProps> = ({
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1.1 }}
-                className="bg-white border border-secondary-100 rounded-[2.5rem] p-8 sm:p-10 shadow-2xl shadow-secondary-200/50 relative overflow-hidden group"
+                className="bg-surface border border-border rounded-[2.5rem] p-8 sm:p-10 shadow-2xl shadow-black/50 relative overflow-hidden group"
             >
                 <div className="absolute top-0 right-0 p-12 opacity-[0.03] pointer-events-none group-hover:scale-110 transition-transform duration-700">
                     <Clock className="w-40 h-40 text-secondary-900" />
@@ -261,8 +261,11 @@ const Step4Success: React.FC<Step4SuccessProps> = ({
 
                 <div className="grid gap-6">
                     {!isStaff && meetingData && (
-                        <div className="bg-primary-50/50 border border-primary-100 rounded-3xl p-6 hover:bg-primary-50 transition-colors">
-                            <div className="flex items-center gap-3 mb-6">
+                        <div className="bg-gradient-to-br from-surface to-black border border-primary-500/20 rounded-3xl p-6 relative overflow-hidden group/card hover:border-primary-500/40 transition-all duration-300">
+                            {/* Glow Effect */}
+                            <div className="absolute inset-0 bg-primary-500/5 blur-3xl group-hover/card:bg-primary-500/10 transition-colors" />
+
+                            <div className="flex items-center gap-3 mb-6 relative z-10">
                                 <div className="flex h-3 w-3 relative">
                                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-400 opacity-75"></span>
                                     <span className="relative inline-flex rounded-full h-3 w-3 bg-primary-500"></span>
@@ -271,8 +274,8 @@ const Step4Success: React.FC<Step4SuccessProps> = ({
                             </div>
 
                             <div className="grid sm:grid-cols-2 gap-8 mb-8">
-                                <div className="flex items-center gap-4">
-                                    <div className="p-2.5 bg-white rounded-2xl shadow-sm">
+                                <div className="flex items-center gap-4 relative z-10">
+                                    <div className="p-2.5 bg-surface/50 rounded-2xl shadow-sm border border-border">
                                         <Calendar className="w-6 h-6 text-primary-500" />
                                     </div>
                                     <div>
@@ -280,8 +283,8 @@ const Step4Success: React.FC<Step4SuccessProps> = ({
                                         <p className="text-lg font-black text-secondary-800">{meetingData.date}</p>
                                     </div>
                                 </div>
-                                <div className="flex items-center gap-4">
-                                    <div className="p-2.5 bg-white rounded-2xl shadow-sm">
+                                <div className="flex items-center gap-4 relative z-10">
+                                    <div className="p-2.5 bg-surface/50 rounded-2xl shadow-sm border border-border">
                                         <Clock className="w-6 h-6 text-primary-500" />
                                     </div>
                                     <div>
@@ -297,7 +300,7 @@ const Step4Success: React.FC<Step4SuccessProps> = ({
                                 href={meetingData.link}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="flex items-center justify-center gap-3 w-full bg-primary-500 text-white font-black py-5 rounded-2xl hover:bg-primary-600 transition-all shadow-xl shadow-primary-500/20 uppercase tracking-widest text-xs"
+                                className="relative z-10 flex items-center justify-center gap-3 w-full bg-primary-500 text-white font-black py-5 rounded-2xl hover:bg-primary-600 transition-all shadow-xl shadow-primary-500/20 uppercase tracking-widest text-xs group-hover/card:scale-[1.02]"
                             >
                                 Enter Induction Portal
                                 <ExternalLink size={16} />

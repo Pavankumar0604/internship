@@ -121,11 +121,12 @@ const FileUpload: React.FC<FileUploadProps> = ({
                         onDragLeave={handleDragLeave}
                         onDrop={handleDrop}
                         className={`
-              relative border-2 border-dashed rounded-2xl p-8
-              transition-all duration-300 cursor-pointer bg-white
+              relative overflow-hidden group
+              w-full p-8 transition-all duration-300 cursor-pointer bg-surface
+              border-2 border-dashed rounded-2xl
               ${isDragging
-                                ? 'border-primary-500 bg-primary-50 scale-102 shadow-lg'
-                                : 'border-secondary-200 hover:border-primary-300 hover:bg-secondary-50'
+                                ? 'border-primary-500 bg-primary-50/10'
+                                : 'border-border hover:border-primary-300 hover:bg-secondary-50'
                             }
             `}
                     >
@@ -185,11 +186,16 @@ const FileUpload: React.FC<FileUploadProps> = ({
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.9 }}
-                        className="bg-primary-50 border-2 border-primary-200 rounded-2xl p-6"
+                        className="bg-surface border-2 border-primary-500/20 rounded-2xl p-6 relative overflow-hidden group hover:border-primary-500/40 transition-all duration-300"
                     >
-                        <div className="flex items-start gap-4">
+                        {/* Background decoration */}
+                        <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none group-hover:scale-110 transition-transform duration-700">
+                            <File className="w-24 h-24 text-primary-500" />
+                        </div>
+
+                        <div className="flex items-start gap-4 relative z-10">
                             <div className="flex-shrink-0">
-                                <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center border border-primary-100">
+                                <div className="w-12 h-12 bg-primary-500/10 rounded-xl flex items-center justify-center border border-primary-500/20 shadow-sm">
                                     <File className="w-6 h-6 text-primary-500" />
                                 </div>
                             </div>
@@ -205,7 +211,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
                                     </div>
                                     <button
                                         onClick={removeFile}
-                                        className="flex-shrink-0 p-2 hover:bg-white rounded-lg transition-colors text-secondary-400 hover:text-red-500"
+                                        className="flex-shrink-0 p-2 hover:bg-background rounded-lg transition-colors text-secondary-400 hover:text-red-500"
                                     >
                                         <X className="w-5 h-5" />
                                     </button>

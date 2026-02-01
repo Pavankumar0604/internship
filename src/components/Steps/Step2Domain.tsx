@@ -6,7 +6,7 @@ import Button from '../ui/Button';
 import { InternshipDomain, INTERNSHIP_DOMAINS } from '@/types/enrollment';
 
 interface Step2DomainProps {
-    onNext: (domains: InternshipDomain[]) => void;
+    onNext: (domains: InternshipDomain[]) => Promise<void> | void;
     onBack: () => void;
     initialData?: InternshipDomain | null;
     role?: 'student' | 'staff'; // Added role
@@ -38,7 +38,9 @@ const Step2Domain: React.FC<Step2DomainProps> = ({
         }
     };
 
-    const handleContinue = () => {
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const handleContinue = async () => {
         if (selectedDomains.length === 0) {
             // Interactive feedback instead of disabled button
             import('react-hot-toast').then(({ default: toast }) => {
@@ -46,7 +48,17 @@ const Step2Domain: React.FC<Step2DomainProps> = ({
             });
             return;
         }
-        onNext(selectedDomains);
+
+        setIsSubmitting(true);
+        try {
+            await onNext(selectedDomains);
+        } catch (error) {
+            console.error("Submission failed", error);
+        } finally {
+            // Only stop loading if we are NOT unmounting (tough to know, but standard pattern)
+            // If onNext navigates away, this state update might warn, but that's acceptable/benign here.
+            setIsSubmitting(false);
+        }
     };
 
     const totalPrice = selectedDomains.reduce((sum, d) => sum + d.price, 0);
@@ -101,27 +113,27 @@ const Step2Domain: React.FC<Step2DomainProps> = ({
                                 selected={isSelected}
                                 onClick={() => toggleDomain(domain)}
                                 className={`p-6 h-full transition-all duration-500 cursor-pointer border-2 relative overflow-hidden ${isSelected
-                                    ? 'border-primary-500 shadow-glow'
-                                    : 'border-secondary-100 hover:border-primary-200'
+                                    ? 'border-primary-500 shadow-glow bg-primary-900/10'
+                                    : 'border-border hover:border-primary-200 bg-surface'
                                     }`}
                             >
                                 <div className="flex flex-col items-center text-center gap-4 mb-6">
-                                    <div className={`p-4 rounded-2xl transition-colors ${isSelected ? 'bg-primary-50 text-primary-600' : 'bg-secondary-50 text-secondary-400'
+                                    <div className={`p-4 rounded-2xl transition-colors ${isSelected ? 'bg-primary-500 text-white' : 'bg-background text-secondary-400'
                                         }`}>
                                         <Icon className="w-10 h-10" />
                                     </div>
                                     <div>
-                                        <h3 className={`text-2xl font-bold mb-1 ${isSelected ? 'text-primary-900' : 'text-secondary-800'}`}>
+                                        <h3 className={`text-2xl font-bold mb-1 ${isSelected ? 'text-white' : 'text-secondary-800'}`}>
                                             {domain.title}
                                         </h3>
                                         <p className="text-secondary-500 font-bold text-sm">{domain.subtitle}</p>
                                     </div>
-                                    <div className="text-3xl font-black text-secondary-900">
+                                    <div className={`text-3xl font-black ${isSelected ? 'text-white' : 'text-secondary-900'}`}>
                                         {isStaff ? 'Staff Track' : `₹${domain.price}`}
                                     </div>
                                 </div>
 
-                                <div className="space-y-4 border-t border-secondary-50 pt-6">
+                                <div className="space-y-4 border-t border-border pt-6">
                                     <p className="text-xs font-black uppercase tracking-widest text-secondary-400 mb-2">Curriculum Includes:</p>
                                     <div className="grid grid-cols-2 gap-2">
                                         {domain.subcourses?.map((sc, idx) => (
@@ -145,7 +157,7 @@ const Step2Domain: React.FC<Step2DomainProps> = ({
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.95 }}
-                        className="bg-secondary-900 rounded-2xl p-6 mb-8 text-white shadow-xl relative overflow-hidden border border-white/5"
+                        className="bg-surface rounded-2xl p-6 mb-8 text-white shadow-xl relative overflow-hidden border border-border"
                     >
                         <div className="absolute -top-4 -right-4 p-4 opacity-[0.03]">
                             <Info className="w-20 h-20" />
@@ -188,9 +200,11 @@ const Step2Domain: React.FC<Step2DomainProps> = ({
                     variant="primary"
                     size="md"
                     onClick={handleContinue}
+                    disabled={isSubmitting}
+                    isLoading={isSubmitting}
                     className="flex-1"
                 >
-                    {isStaff ? 'Submit Application' : 'Proceed to Payment'} →
+                    {isStaff ? (isSubmitting ? 'Submitting...' : 'Submit Application') : 'Proceed to Payment'} →
                 </Button>
             </div>
         </motion.div>

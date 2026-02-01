@@ -23,9 +23,9 @@ const Card: FC<CardProps> = ({
             onClick={onClick}
             className={`
         relative overflow-hidden
-        bg-white shadow-card hover:shadow-card-hover
+        bg-surface shadow-card hover:shadow-card-hover
         border rounded-2xl
-        ${selected ? 'border-primary-500 ring-2 ring-primary-500/20' : 'border-secondary-100'}
+        ${selected ? 'border-primary-500 ring-2 ring-primary-500/20' : 'border-border'}
         ${hover ? 'cursor-pointer' : ''}
         transition-all duration-300
         ${className}
