@@ -1,76 +1,115 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="icon" type="image/png" href="/logo.png" />
+        <link rel="apple-touch-icon" href="/logo.png" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+        />
+        <meta
+            http-equiv="Content-Security-Policy"
+            content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://checkout.razorpay.com https://vercel.live; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://* blob:; connect-src 'self' https://*.supabase.co https://*.razorpay.com https://vercel.live https://fonts.googleapis.com https://fonts.gstatic.com; frame-src https://api.razorpay.com https://vercel.live; object-src 'none'; base-uri 'self'; upgrade-insecure-requests;"
+        >
+        <meta http-equiv="X-Content-Type-Options" content="nosniff">
 
-<head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="/logo.png" />
-    <link rel="apple-touch-icon" href="/logo.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://checkout.razorpay.com https://vercel.live; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://* blob:; connect-src 'self' https://*.supabase.co https://*.razorpay.com https://vercel.live; frame-src https://api.razorpay.com https://vercel.live; object-src 'none'; base-uri 'self'; upgrade-insecure-requests;">
-    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+        <meta
+            http-equiv="Referrer-Policy"
+            content="strict-origin-when-cross-origin"
+        >
+        <meta
+            http-equiv="Permissions-Policy"
+            content="camera=(), microphone=(), geolocation=(), interest-cohort=()"
+        >
 
-    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
-    <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), interest-cohort=()">
+        <!-- SEO Meta Tags -->
+        <title>
+            15-Day Internship Enrollment | UI/UX, Frontend, Database, Digital
+            Marketing
+        </title>
+        <meta
+            name="description"
+            content="Enroll in our 15-day professional internship program. Choose from UI/UX Design, Frontend Development, Database Concepts, or Digital Marketing. Get certified and start this Monday!"
+        />
+        <meta
+            name="keywords"
+            content="internship, enrollment, UI/UX design, frontend development, database, digital marketing, certificate, training program"
+        />
+        <meta name="author" content="Internship Program" />
 
-    <!-- SEO Meta Tags -->
-    <title>15-Day Internship Enrollment | UI/UX, Frontend, Database, Digital Marketing</title>
-    <meta name="description"
-        content="Enroll in our 15-day professional internship program. Choose from UI/UX Design, Frontend Development, Database Concepts, or Digital Marketing. Get certified and start this Monday!" />
-    <meta name="keywords"
-        content="internship, enrollment, UI/UX design, frontend development, database, digital marketing, certificate, training program" />
-    <meta name="author" content="Internship Program" />
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="website" />
+        <meta
+            property="og:url"
+            content="https://internship-enrollment.vercel.app/"
+        />
+        <meta
+            property="og:title"
+            content="15-Day Internship Enrollment - Limited Seats Available!"
+        />
+        <meta
+            property="og:description"
+            content="Join 500+ certified students. Choose from UI/UX, Frontend, Database, or Digital Marketing. New batch starts this Monday!"
+        />
+        <meta property="og:image" content="/og-image.jpg" />
 
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://internship-enrollment.vercel.app/" />
-    <meta property="og:title" content="15-Day Internship Enrollment - Limited Seats Available!" />
-    <meta property="og:description"
-        content="Join 500+ certified students. Choose from UI/UX, Frontend, Database, or Digital Marketing. New batch starts this Monday!" />
-    <meta property="og:image" content="/og-image.jpg" />
+        <!-- Twitter -->
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta
+            property="twitter:url"
+            content="https://internship-enrollment.vercel.app/"
+        />
+        <meta
+            property="twitter:title"
+            content="15-Day Internship Enrollment - Limited Seats!"
+        />
+        <meta
+            property="twitter:description"
+            content="Professional internship program with certificate. Enroll now!"
+        />
+        <meta property="twitter:image" content="/og-image.jpg" />
 
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://internship-enrollment.vercel.app/" />
-    <meta property="twitter:title" content="15-Day Internship Enrollment - Limited Seats!" />
-    <meta property="twitter:description" content="Professional internship program with certificate. Enroll now!" />
-    <meta property="twitter:image" content="/og-image.jpg" />
+        <!-- Theme Color -->
+        <meta name="theme-color" content="#000000" />
 
-    <!-- Theme Color -->
-    <meta name="theme-color" content="#000000" />
+        <!-- PWA Manifest -->
+        <link
+            rel="manifest"
+            href="/manifest.json"
+            crossorigin="use-credentials"
+        />
 
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="/manifest.json" crossorigin="use-credentials" />
+        <!-- Google Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+            rel="stylesheet"
+        />
 
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
-        rel="stylesheet" />
+        <!-- Razorpay Script Preload -->
+        <link rel="preconnect" href="https://checkout.razorpay.com" />
 
-    <!-- Razorpay Script Preload -->
-    <link rel="preconnect" href="https://checkout.razorpay.com" />
+        <!-- Structured Data -->
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@type": "Course",
+                "name": "Mind Mesh 15-Day Internship Program",
+                "description": "Professional 15-day internship in UI/UX Design, Frontend Development, Database, and Digital Marketing.",
+                "provider": {
+                    "@type": "Organization",
+                    "name": "Mind Mesh",
+                    "sameAs": "https://internship-enrollment.vercel.app/"
+                },
+                "educationalCredentialAwarded": "Internship Certificate"
+            }
+        </script>
+    </head>
 
-    <!-- Structured Data -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Course",
-      "name": "Mind Mesh 15-Day Internship Program",
-      "description": "Professional 15-day internship in UI/UX Design, Frontend Development, Database, and Digital Marketing.",
-      "provider": {
-        "@type": "Organization",
-        "name": "Mind Mesh",
-        "sameAs": "https://internship-enrollment.vercel.app/"
-      },
-      "educationalCredentialAwarded": "Internship Certificate"
-    }
-    </script>
-</head>
-
-<body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-</body>
-
+    <body>
+        <div id="root"></div>
+        <script type="module" src="/src/main.tsx"></script>
+    </body>
 </html>
